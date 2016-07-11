@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "# Randomization Table 3.1 for One-way ANOVA (parallel group design)\n\nRan1way = function(nLvl, nRpl, LvlPrefix=\"A\", RplPrefix=\"R\")\n{\n  RawArr = sample(nLvl*nRpl)\n  RawCol = cbind(rep(1:nLvl,nRpl), RawArr)\n  RawCol1 = RawCol[order(RawCol[,2]),]\n  RawCol2 = RawCol[order(RawCol[,1],RawCol[,2]),]\n\n  RowNames = vector(length=nLvl*nRpl)\n  for (i in 1:(nLvl*nRpl)) {\n    RowNames[i] = paste(LvlPrefix, RawCol1[i,1], sep=\"\")\n  }\n \n  colnames(RawCol1) = c(\"Level\",\"Experiment Order\")\n  rownames(RawCol1) = RowNames\n    \n  RawMat = matrix(nrow=nRpl, ncol=nLvl, RawCol2[,2])\n\n  LevelNames = vector()\n  for (i in 1:nLvl) {\n    LevelNames = c(LevelNames, paste(LvlPrefix, i, sep=\"\"))\n  }\n  \n  RowNames = vector()\n  for (i in 1:nRpl) {\n    RowNames = c(RowNames, paste(RplPrefix, i, sep=\"\"))\n  }\n  colnames(RawMat) = LevelNames\n  rownames(RawMat) = RowNames\n\n  Res = list(RawCol1[,2], RawMat)\n  names(Res) = c(\"Experiment Order Vector\", \"Exmperiment Order Matrix\")\n  return(Res)\n}\n",
+    "created" : 1468222218889.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1867097980",
+    "id" : "9B14A483",
+    "lastKnownWriteTime" : 1399945124,
+    "last_content_update" : 1399945124,
+    "path" : "D:/Project/ExperimentDesign/src/Ran1way.R",
+    "project_path" : "src/Ran1way.R",
+    "properties" : {
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

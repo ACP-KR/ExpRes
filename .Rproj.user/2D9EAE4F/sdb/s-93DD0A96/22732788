@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "# Chapter 3 Data Prep\n\n# Example 3.1 Table 3.5 p65\nnLvl = 4\nnRpl = 3\n\nvData = c(8.44, 8.36, 8.28, 8.59, 8.91, 8.60, 9.34, 9.41, 9.69, 8.92, 8.92, 8.74)\nvLevel = sort(rep(1:nLvl,nRpl))\nT3.5 = cbind(vLevel, vData)\ncolnames(T3.5) = c(\"A\",\"Y\")\nwrite.csv(T3.5, \"T3.5.CSV\", row.names=FALSE, quote=FALSE)\nread.csv(\"T3.5.CSV\")\n\n\n# Table 3.13 p85\nvData2 = c(49, 73, 58, 38, 42, 31, 40, 43, 44, 34, 20, 46, 41, 58, 31, 65, 45, 73, 76)\nvLevel2 = c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4)\nT3.13 = cbind(vLevel2, vData2)\ncolnames(T3.13) = c(\"A\",\"Y\")\nwrite.csv(T3.13, \"T3.13.CSV\", row.names=FALSE, quote=FALSE)\nread.csv(\"T3.13.CSV\")\n\n\n# ???��?�� 3.4\nvData3 = c(15.4, 15.2, 15.0, 15.3, 15.2, 14.9, 15.1,\n            14.8, 14.9, 14.7, 15.0, 14.8, 14.9, 15.0,\n            15.5, 15.4, 15.3, 15.2, 15.4, 15.5, 15.0)\nvLevel3 = sort(rep(1:3, 7))\nP3.4 = cbind(vLevel3, vData3)\ncolnames(P3.4) = c(\"A\",\"Y\")\nwrite.csv(P3.4, \"P3.4.CSV\", row.names=FALSE, quote=FALSE)\nread.csv(\"P3.4.CSV\")\n\n\n\n",
+    "created" : 1468221893177.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1653868621",
+    "id" : "22732788",
+    "lastKnownWriteTime" : 1468222046,
+    "last_content_update" : 1468222046463,
+    "path" : "D:/Project/ExperimentDesign/src/CH03Data.R",
+    "project_path" : "src/CH03Data.R",
+    "properties" : {
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

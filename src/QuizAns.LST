@@ -1,0 +1,479 @@
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초   1
+
+                                                 OBS    R    A     Y
+
+                                                   1    1    1    1.7
+                                                   2    1    3    2.3
+                                                   3    1    2    3.4
+                                                   4    2    3    2.1
+                                                   5    2    1    1.5
+                                                   6    2    2    2.6
+                                                   7    3    1    0.1
+                                                   8    3    2    2.3
+                                                   9    3    3    0.8
+                                                  10    4    2    2.2
+                                                  11    4    1    0.6
+                                                  12    4    3    1.6
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초   2
+
+                                                  The GLM Procedure
+
+                                               Class Level Information
+
+                                           Class         Levels    Values
+
+                                           R                  4    1 2 3 4
+
+                                           A                  3    1 2 3
+
+
+                                       Number of Observations Read          12
+                                       Number of Observations Used          12
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초   3
+
+                                                  The GLM Procedure
+
+Dependent Variable: Y
+
+                                                         Sum of
+                 Source                      DF         Squares     Mean Square    F Value    Pr > F
+
+                 Model                        5      8.95166667      1.79033333      23.61    0.0007
+
+                 Error                        6      0.45500000      0.07583333
+
+                 Corrected Total             11      9.40666667
+
+
+                                  R-Square     Coeff Var      Root MSE        Y Mean
+
+                                  0.951630      15.58746      0.275379      1.766667
+
+
+                 Source                      DF       Type I SS     Mean Square    F Value    Pr > F
+
+                 R                            3      3.48000000      1.16000000      15.30    0.0032
+                 A                            2      5.47166667      2.73583333      36.08    0.0005
+
+
+                 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+                 R                            3      3.48000000      1.16000000      15.30    0.0032
+                 A                            2      5.47166667      2.73583333      36.08    0.0005
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초   4
+
+                                                  The GLM Procedure
+
+                      Source                  Type III Expected Mean Square
+
+                      R                       Var(Error) + 3 Var(R)
+
+                      A                       Var(Error) + Q(A)
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초   5
+
+                                                  The GLM Procedure
+                               Tests of Hypotheses for Mixed Model Analysis of Variance
+
+Dependent Variable: Y
+
+                 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+                 R                            3        3.480000        1.160000      15.30    0.0032
+                 A                            2        5.471667        2.735833      36.08    0.0005
+
+                 Error: MS(Error)             6        0.455000        0.075833
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초   6
+
+
+                                                 Least Squares Means
+
+                                                                   LSMEAN
+                                            A        Y LSMEAN      Number
+
+                                            1      0.97500000           1
+                                            2      2.62500000           2
+                                            3      1.70000000           3
+
+
+                                           Least Squares Means for effect A
+                                         Pr > |t| for H0: LSMean(i)=LSMean(j)
+
+                                                Dependent Variable: Y
+
+                                    i/j              1             2             3
+
+                                       1                      0.0001        0.0098
+                                       2        0.0001                      0.0032
+                                       3        0.0098        0.0032
+
+
+                                    A        Y LSMEAN      95% Confidence Limits
+
+                                    1        0.975000        0.638087     1.311913
+                                    2        2.625000        2.288087     2.961913
+                                    3        1.700000        1.363087     2.036913
+
+
+                                           Least Squares Means for Effect A
+
+                                             Difference
+                                                Between    95% Confidence Limits for
+                                 i    j           Means       LSMean(i)-LSMean(j)
+
+                                 1    2       -1.650000       -2.126468    -1.173532
+                                 1    3       -0.725000       -1.201468    -0.248532
+                                 2    3        0.925000        0.448532     1.401468
+
+
+NOTE: To ensure overall protection level, only probabilities associated with pre-planned comparisons should be used.
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초   7
+
+                                             OBS    R     A     B      Y
+
+                                               1    1    580    5     217
+                                               2    1    580    10    233
+                                               3    1    580    15    175
+                                               4    1    600    5     158
+                                               5    1    600    10    138
+                                               6    1    600    15    152
+                                               7    1    620    5     229
+                                               8    1    620    10    186
+                                               9    1    620    15    155
+                                              10    1    640    5     223
+                                              11    1    640    10    227
+                                              12    1    640    15    156
+                                              13    2    580    5     188
+                                              14    2    580    10    201
+                                              15    2    580    15    195
+                                              16    2    600    5     126
+                                              17    2    600    10    130
+                                              18    2    600    15    147
+                                              19    2    620    5     160
+                                              20    2    620    10    170
+                                              21    2    620    15    161
+                                              22    2    640    5     201
+                                              23    2    640    10    181
+                                              24    2    640    15    172
+                                              25    3    580    5     162
+                                              26    3    580    10    170
+                                              27    3    580    15    213
+                                              28    3    600    5     122
+                                              29    3    600    10    185
+                                              30    3    600    15    180
+                                              31    3    620    5     167
+                                              32    3    620    10    181
+                                              33    3    620    15    182
+                                              34    3    640    5     182
+                                              35    3    640    10    201
+                                              36    3    640    15    199
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초   8
+
+                                                  The GLM Procedure
+
+                                               Class Level Information
+
+                                       Class         Levels    Values
+
+                                       R                  3    1 2 3
+
+                                       A                  4    580 600 620 640
+
+                                       B                  3    10 15 5
+
+
+                                       Number of Observations Read          36
+                                       Number of Observations Used          36
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초   9
+
+                                                  The GLM Procedure
+
+Dependent Variable: Y
+
+                                                         Sum of
+                 Source                      DF         Squares     Mean Square    F Value    Pr > F
+
+                 Model                       23     26418.91667      1148.64855       4.73    0.0038
+
+                 Error                       12      2912.05556       242.67130
+
+                 Corrected Total             35     29330.97222
+
+
+                                  R-Square     Coeff Var      Root MSE        Y Mean
+
+                                  0.900717      8.728479      15.57791      178.4722
+
+
+                 Source                      DF       Type I SS     Mean Square    F Value    Pr > F
+
+                 R                            2      1962.72222       981.36111       4.04    0.0454
+                 A                            3     12494.30556      4164.76852      17.16    0.0001
+                 R*A                          6      1773.94444       295.65741       1.22    0.3617
+                 B                            2       566.22222       283.11111       1.17    0.3444
+                 R*B                          4      7021.27778      1755.31944       7.23    0.0033
+                 A*B                          6      2600.44444       433.40741       1.79    0.1848
+
+
+                 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+                 R                            2      1962.72222       981.36111       4.04    0.0454
+                 A                            3     12494.30556      4164.76852      17.16    0.0001
+                 R*A                          6      1773.94444       295.65741       1.22    0.3617
+                 B                            2       566.22222       283.11111       1.17    0.3444
+                 R*B                          4      7021.27778      1755.31944       7.23    0.0033
+                 A*B                          6      2600.44444       433.40741       1.79    0.1848
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초  10
+
+                                                  The GLM Procedure
+
+                      Source                  Type III Expected Mean Square
+
+                      R                       Var(Error) + 4 Var(R*B) + 3 Var(R*A) + 12 Var(R)
+
+                      A                       Var(Error) + 3 Var(R*A) + Q(A,A*B)
+
+                      R*A                     Var(Error) + 3 Var(R*A)
+
+                      B                       Var(Error) + 4 Var(R*B) + Q(B,A*B)
+
+                      R*B                     Var(Error) + 4 Var(R*B)
+
+                      A*B                     Var(Error) + Q(A*B)
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초  11
+
+                                                  The GLM Procedure
+                               Tests of Hypotheses for Mixed Model Analysis of Variance
+
+Dependent Variable: Y
+
+                 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+                 R                            2     1962.722222      981.361111       0.54    0.6176
+
+                 Error                   4.1404     7487.187535     1808.305556
+                 Error: MS(R*A) + MS(R*B) - MS(Error)
+
+
+                    Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+               *    A                            3           12494     4164.768519      14.09    0.0040
+
+                    Error: MS(R*A)               6     1773.944444      295.657407
+               * This test assumes one or more other fixed effects are zero.
+
+
+                 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+                 R*A                          6     1773.944444      295.657407       1.22    0.3617
+                 R*B                          4     7021.277778     1755.319444       7.23    0.0033
+                 A*B                          6     2600.444444      433.407407       1.79    0.1848
+
+                 Error: MS(Error)            12     2912.055556      242.671296
+
+
+                    Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+               *    B                            2      566.222222      283.111111       0.16    0.8563
+
+                    Error: MS(R*B)               4     7021.277778     1755.319444
+               * This test assumes one or more other fixed effects are zero.
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초  12
+
+                                                  The GLM Procedure
+
+                                               Class Level Information
+
+                                       Class         Levels    Values
+
+                                       R                  3    1 2 3
+
+                                       A                  4    580 600 620 640
+
+                                       B                  3    10 15 5
+
+
+                                       Number of Observations Read          36
+                                       Number of Observations Used          36
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초  13
+
+                                                  The GLM Procedure
+
+Dependent Variable: Y
+
+                                                         Sum of
+                 Source                      DF         Squares     Mean Square    F Value    Pr > F
+
+                 Model                       11     22044.52778      2004.04798       6.60    <.0001
+
+                 Error                       24      7286.44444       303.60185
+
+                 Corrected Total             35     29330.97222
+
+
+                                  R-Square     Coeff Var      Root MSE        Y Mean
+
+                                  0.751578      9.762962      17.42417      178.4722
+
+
+                 Source                      DF       Type I SS     Mean Square    F Value    Pr > F
+
+                 R                            2      1962.72222       981.36111       3.23    0.0571
+                 A                            3     12494.30556      4164.76852      13.72    <.0001
+                 B                            2       566.22222       283.11111       0.93    0.4074
+                 R*B                          4      7021.27778      1755.31944       5.78    0.0021
+
+
+                 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+                 R                            2      1962.72222       981.36111       3.23    0.0571
+                 A                            3     12494.30556      4164.76852      13.72    <.0001
+                 B                            2       566.22222       283.11111       0.93    0.4074
+                 R*B                          4      7021.27778      1755.31944       5.78    0.0021
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초  14
+
+                                                  The GLM Procedure
+
+                      Source                  Type III Expected Mean Square
+
+                      R                       Var(Error) + 4 Var(R*B) + 12 Var(R)
+
+                      A                       Var(Error) + Q(A)
+
+                      B                       Var(Error) + 4 Var(R*B) + Q(B)
+
+                      R*B                     Var(Error) + 4 Var(R*B)
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초  15
+
+                                                  The GLM Procedure
+                               Tests of Hypotheses for Mixed Model Analysis of Variance
+
+Dependent Variable: Y
+
+                 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+                 R                            2     1962.722222      981.361111       0.56    0.6108
+                 B                            2      566.222222      283.111111       0.16    0.8563
+
+                 Error: MS(R*B)               4     7021.277778     1755.319444
+
+
+                 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+                 A                            3           12494     4164.768519      13.72    <.0001
+                 R*B                          4     7021.277778     1755.319444       5.78    0.0021
+
+                 Error: MS(Error)            24     7286.444444      303.601852
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초  16
+
+                                               OBS    A    B    R     Y
+
+                                                 1    1    1    1     1
+                                                 2    1    1    2    -1
+                                                 3    1    1    3     0
+                                                 4    1    2    1    -2
+                                                 5    1    2    2    -3
+                                                 6    1    2    3    -4
+                                                 7    1    3    1    -2
+                                                 8    1    3    2     0
+                                                 9    1    3    3     1
+                                                10    1    4    1     1
+                                                11    1    4    2     4
+                                                12    1    4    3     0
+                                                13    2    1    1     1
+                                                14    2    1    2    -2
+                                                15    2    1    3    -3
+                                                16    2    2    1     0
+                                                17    2    2    2     4
+                                                18    2    2    3     2
+                                                19    2    3    1    -1
+                                                20    2    3    2     0
+                                                21    2    3    3    -2
+                                                22    2    4    1     0
+                                                23    2    4    2     3
+                                                24    2    4    3     2
+                                                25    3    1    1     2
+                                                26    3    1    2     4
+                                                27    3    1    3     0
+                                                28    3    2    1    -2
+                                                29    3    2    2     0
+                                                30    3    2    3     2
+                                                31    3    3    1     1
+                                                32    3    3    2    -1
+                                                33    3    3    3     2
+                                                34    3    4    1     3
+                                                35    3    4    2     2
+                                                36    3    4    3     1
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초  17
+
+                                                  The GLM Procedure
+
+                                               Class Level Information
+
+                                           Class         Levels    Values
+
+                                           A                  3    1 2 3
+
+                                           B                  4    1 2 3 4
+
+
+                                       Number of Observations Read          36
+                                       Number of Observations Used          36
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초  18
+
+                                                  The GLM Procedure
+
+Dependent Variable: Y
+
+                                                         Sum of
+                 Source                      DF         Squares     Mean Square    F Value    Pr > F
+
+                 Model                       11      84.9722222       7.7247475       2.93    0.0135
+
+                 Error                       24      63.3333333       2.6388889
+
+                 Corrected Total             35     148.3055556
+
+
+                                  R-Square     Coeff Var      Root MSE        Y Mean
+
+                                  0.572954      449.8520      1.624466      0.361111
+
+
+                 Source                      DF       Type I SS     Mean Square    F Value    Pr > F
+
+                 A                            2     15.05555556      7.52777778       2.85    0.0774
+                 B(A)                         9     69.91666667      7.76851852       2.94    0.0167
+
+
+                 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+                 A                            2     15.05555556      7.52777778       2.85    0.0774
+                 B(A)                         9     69.91666667      7.76851852       2.94    0.0167
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초  19
+
+                                                  The GLM Procedure
+
+                      Source                  Type III Expected Mean Square
+
+                      A                       Var(Error) + 3 Var(B(A)) + Q(A)
+
+                      B(A)                    Var(Error) + 3 Var(B(A))
+                                                      SAS 시스템         2014년 05월 19일 월요일 오후 12시57분17초  20
+
+                                                  The GLM Procedure
+                               Tests of Hypotheses for Mixed Model Analysis of Variance
+
+Dependent Variable: Y
+
+                 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+                 A                            2       15.055556        7.527778       0.97    0.4158
+
+                 Error: MS(B(A))              9       69.916667        7.768519
+
+
+                 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+
+                 B(A)                         9       69.916667        7.768519       2.94    0.0167
+
+                 Error: MS(Error)            24       63.333333        2.638889

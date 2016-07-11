@@ -1,0 +1,23 @@
+DATA T0506;
+  INFILE "E:\Rt\ExpDes\T5.6.CSV" FIRSTOBS=3 DLM=",";
+  INPUT A $ B $ Y;
+
+PROC PRINT; RUN;
+
+PROC ANOVA;
+  CLASS A B;
+  MODEL Y = A B A*B;
+
+PROC ANOVA;
+  CLASS A B;
+  MODEL Y = B A A*B;
+
+PROC GLM;
+  CLASS A B;
+  MODEL Y = A B A*B;
+ 
+PROC GLM;
+  CLASS A B;
+  MODEL Y = B A A*B;
+
+RUN;

@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#Chapter 3 ?Ͽ???ġ\n\n# Table 3.1 p64\nsource(\"Ran1way.R\")\nRan1way(nLvl=4, nRpl=5)\n\n##########\n# Example 3.1\nnLvl = 4\nnRpl = 3\n\nLvlPrefix = \"A\"\nRplPrefix = \"R\"\nLevelNames = vector()\nfor (i in 1:nLvl) LevelNames = c(LevelNames, paste(LvlPrefix, i, sep=\"\"))\n\nRowNames = vector()\nfor (i in 1:nRpl) RowNames = c(RowNames, paste(RplPrefix, i, sep=\"\"))\n\nvData = c(8.44, 8.36, 8.28, 8.59, 8.91, 8.60, 9.34, 9.41, 9.69, 8.92, 8.92, 8.74)\n\nTbl = T3.5 = matrix(nrow=nRpl, ncol=nLvl, vData)\nTbl\ncolnames(Tbl) = LevelNames\nrownames(Tbl) = RowNames\n\nl = nLvl = dim(Tbl)[2]\nm = nRpl = dim(Tbl)[1]\n\nGTot = sum(Tbl)\nGMean = mean(Tbl)\n\nTot = colSums(Tbl)\nBar = colMeans(Tbl)\n\nSST = sum((Tbl - GMean)^2)\nSSA = nRpl*sum((Bar - GMean)^2)\nSSE = SST - SSA\nSS = c(SSA, SSE, SST)\n\ndf.A = l - 1\ndf.E = l*(m - 1)\ndf.T = l*m - 1\n\ndfs = c(df.A, df.E, df.T)\n\nMS = SS/dfs\nMS\n\nF.val = MS[1]/MS[2]\np.val = 1 - pf(F.val, df.A, df.E)\nF.val\np.val\nalpha = 0.05\nF.crt = qf(1 - alpha, df.A, df.E)\nF.crt\n\nMSE = MS[2]\n\nLL = Bar - qt(1 - alpha/2, df.E)*sqrt(MSE/m)\nUL = Bar + qt(1 - alpha/2, df.E)*sqrt(MSE/m)\ncbind(LL, Bar, UL)\n\n\nlibrary(gplots)\nplotCI(Bar, uiw=sqrt(MSE/m), type=\"b\", ylab=\"Strength\", xlab=\"Temperature\", xaxt=\"n\", ylim=c(8,10))\naxis(side=1, at=1:4, labels=colnames(Tbl), cex=0.7)\n\n\nV.diff = 2*MSE/m\nt.crt = qt(1 - alpha/2, df.E)\nLSD = t.crt * sqrt(V.diff)\n\nPDIFF = matrix(ncol=6,nrow=(nLvl*(nLvl-1)/2))\nCurRow = 1\nfor(i in 1:nLvl){\n  for(j in (i+1):nLvl) {\n    PDIFF[CurRow, 1] = i\n    PDIFF[CurRow, 2] = j\n    PDIFF[CurRow, 3] = Bar[i] - Bar[j]\n    PDIFF[CurRow, 4] = Bar[i] - Bar[j] - LSD\n    PDIFF[CurRow, 5] = Bar[i] - Bar[j] + LSD\n    if (PDIFF[CurRow, 4]*PDIFF[CurRow, 5] > 0) PDIFF[CurRow, 6] = 1 \n    else PDIFF[CurRow, 6] = 0\n    CurRow = CurRow + 1\n  }  \n}\n\nPDIFF\n\n\n## Using R lm\n\ncLvl = sort(rep(LevelNames, nRpl))\n\nT3.5L = data.frame(cLvl, vData)\nT3.5L\n\nRes1 = lm(vData ~ cLvl, T3.5L)\nRes2 = lm(vData ~ cLvl - 1, T3.5L)\nRes3 = aov(vData ~ cLvl, T3.5L)\nanova(Res1)\nsummary(Res2)\nTukeyHSD(Res3)\n\n\n# Improved coding\n\nvData = c(8.44, 8.36, 8.28, 8.59, 8.91, 8.60, 9.34, 9.41, 9.69, 8.92, 8.92, 8.74)\nvLevel = sort(rep(1:4,3))\nsource(\"a1way.R\")\na1way(cbind(vLevel, vData))\nTukeyHSD(aov(vData ~ as.factor(vLevel)))\n\nvData2 = c(49, 73, 58, 38, 42, 31, 40, 43, 44, 34, 20, 46, 41, 58, 31, 65, 45, 73, 76)\nvLevel2 = c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4)\n\nsource(\"a1way.R\")\nRes = a1way(cbind(vLevel2, vData2))\nRes\n\nlibrary(gplots)\nplotCI(Res[[3]][,2], uiw=(Res[[3]][,2]-Res[[3]][,1])/t.crt, type=\"b\", xaxt=\"n\", ylim=c(20,80))\naxis(side=1, at=1:l, cex=0.7)\n\n",
+    "created" : 1468221884573.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1186323216",
+    "id" : "D6FBF4FE",
+    "lastKnownWriteTime" : 1468222988,
+    "last_content_update" : 1468222988024,
+    "path" : "D:/Project/ExperimentDesign/src/CH03o.R",
+    "project_path" : "src/CH03o.R",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

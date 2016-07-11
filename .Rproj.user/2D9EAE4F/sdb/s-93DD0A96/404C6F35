@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#Chapter 3 ?Ͽ???ġ\n\nsource(\"Ran1way.R\")\nRan1way(nLvl=4, nRpl=5)\n\n# Table 3.5 p65\nT3.5 = read.csv(\"T3.5.CSV\")\nT3.5\nplot(Y ~ as.factor(A), T3.5)\nlmr1 = lm(Y ~ as.factor(A), T3.5)\nlmr1\nsmr1 = summary(lmr1)\nsmr1\nsmr1$sigma\nsmr1$df\ndf.residual(lmr1)\nanr1 = anova(lmr1)\nResSE = sqrt(anr1[\"Residuals\",\"Mean Sq\"]/anr1[\"as.factor(A)\",\"Df\"])\nt.cut = qt(1 - 0.05/2, anr1[\"Residuals\",\"Df\"])\nLSD95 = t.cut*ResSE\nLSD95\n\n\naovr1 = aov(Y ~ as.factor(A), T3.5)\nsummary(aovr1)\nmodel.tables(aovr1, \"means\")\nmodel.tables(aovr1, \"means\")$\"tables\"$\"as.factor(A)\"\nmodel.tables(aovr1, \"means\")$\"tables\"$\"as.factor(A)\" - LSD95\nmodel.tables(aovr1, \"means\")$\"tables\"$\"as.factor(A)\" + LSD95\n\nres1b = lm(Y ~ as.factor(A) - 1, T3.5)\nsmr1b = summary(res1b)\nsmr1b$sigma\nsmr1b$df\ndf.residual(res1b)\n\nres2 = aov(Y ~ as.factor(A), T3.5)\nsummary(res2)\nt1 = model.tables(res2, type=\"means\", se=TRUE)\nt1\nt2 = model.tables(res2, type=\"effects\", se=TRUE)\nt2\nTukeyHSD(res2)\n\nlibrary(gplots)\nplotCI(t1$tables[[2]], uiw=t2$se[[1]], type=\"b\", ylab=\"Strength\", xlab=\"Temperature\", xaxt=\"n\", ylim=c(8,10))\naxis(side=1, at=1:4, labels=c(\"A1\",\"A2\",\"A3\",\"A4\"), cex=0.7)\n\nsource(\"a1way.R\")\na1way(T3.5)\n\n##########\n# Example 3.1, Table 3.12 p85\nT3.13 = read.csv(\"T3.13.CSV\")\nsource(\"a1way.R\")\na1way(T3.13)\n\nres = lm(Y ~ as.factor(A), T3.13)\nres\nsummary(res)\nanova(res)\n\nres2 = aov(Y ~ as.factor(A), T3.13)\nsummary(res2)\n#se.contrast(res2, contrasts(as.factor(T3.13[,\"A\"])), c(-1,1, 0))\n\nt1 = model.tables(res2, type=\"means\", se=TRUE)\nt1\nt2 = model.tables(res2, type=\"effects\", se=TRUE)\nt2\nTukeyHSD(res2)\n\nlibrary(gplots)\nplotCI(t1$tables[[2]], uiw=t2$se[[1]], type=\"b\", ylab=\"??????\", xlab=\"?????? ????\", xaxt=\"n\", ylim=c(0,100))\naxis(side=1, at=1:4, labels=c(\"A1\",\"A2\",\"A3\",\"A4\"), cex=0.7)\n",
+    "created" : 1468221883316.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "562934581",
+    "id" : "404C6F35",
+    "lastKnownWriteTime" : 1468222185,
+    "last_content_update" : 1468222185711,
+    "path" : "D:/Project/ExperimentDesign/src/CH03r.R",
+    "project_path" : "src/CH03r.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
