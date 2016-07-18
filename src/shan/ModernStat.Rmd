@@ -1,0 +1,2508 @@
+http://bitly.com/ascpt
+
+# 현대통계학 14장 연습문제 풀이
+
+```{r}
+#14.01
+(X=1:6)
+#(a)
+(Rank=combn(X,2))
+#(b)
+(W=Rank[1,]+Rank[2,])
+(Mass=as.data.frame(table(W)))
+(MassProb=data.frame(Mass,Probability=Mass[,2]/sum(Mass[,2])))
+```
+
+#14.02 Y
+
+#14.03 C
+#Ho:muB<=muA, H1:muB>muA
+x3=c(2.38, 4.19, 1.39, 3.73, 2.86, 1.21)
+y3=c(4.67, 5.38, 3.89, 4.67, 3.58, 4.96, 3.98)
+d3=x3-y3
+nx3=length(x3)
+ny3=length(y3)
+shapiro.test(x3)#W = 0.93529, p-value = 0.6215
+shapiro.test(y3)#W = 0.94761, p-value = 0.7079
+shapiro.test(d3)#W = 0.92694, p-value = 0.5252 ->정규성 검정: Normal distribution
+t.res3=t.test (y3, x3, alternative="greater")#t = 3.3039, df = 7.3851, p-value = 0.006043
+t.res3$p.value #H0기각
+qt(1-0.05, 13-2)# 1.795885
+wilcox.test(y3, x3, alternative="greater", exact=FALSE)#W = 38, p-value = 0.009128 #H0기각
+
+#14.04
+A=c(19,22,25,26,28,29,34,37,38)
+B=c(20,21,24,30,32,36,40,48,54)
+boxplot(A,B)
+
+#Two-tailed | H0=A,B가 다르다.
+wilcox.test(A, B) #p=0.4363
+t.test(A,B) #p=0.2686
+#H0기각할 수 없음.
+
+#One-tailed | H0=A is less than B
+wilcox.test(A, B, alternative = c("less")) #p=0.2181
+t.test(A,B, alternative = c("less")) #p=0.1343
+#H0기각할 수 없음.
+boxplot(A,B)
+
+#14.05
+x5=c(18,14.5,13.5,12.5,23,24,21,17,18.5,9.5,14)
+y5=c(27,34,20.5,29.5,20,28,20,26.5,22,24.5,34,35.5,19)
+nx5=length(x5)
+ny5=length(y5)
+t.test(x5,y5)
+wilcox.test(x5,y5, exact=FALSE,alternative=c("less"))
+
+#14.06
+#H0:muS=muN, !H1:muS=muA
+x6=c(28,53,39,27,41,68,27,28,45,48,65,78)
+y6=c(32,35,61,43,82,44,78,38,85,63,46,30,47,57)
+nx6=length(x6)
+ny6=length(y6)
+shapiro.test(x6) #W = 0.90414, p-value = 0.1794
+shapiro.test(y6) #W = 0.91226, p-value = 0.17
+shapiro.test(x6-y6)#W = 0.96334, p-value = 0.7775
+t.test6=t.test(x6,y6)#t = -1.0391, df = 23.743, p-value = 0.3092 #H0accept
+alpha=0.05
+qt(1-alpha/2, nx6+ny6-2)#2.063899:|t|<2.063899
+wilcox.test(x6,y6, exact=FALSE)#W = 63.5, p-value = 0.3034
+#H0accept
+
+#14.07 H
+T=c(93,112,85,70,96,97,110,89,92,85)
+S=c(83,92,86,55,90,89,86,72,87,82)
+wilcox.test(T,S) #p=0.05354
+wilcox.test(T,S,paired=TRUE) #p=0.003906
+
+#14.08
+#(a)
+x8=c(188,96,168,176,153,172,177,163,146,173,186,168,177,184,96)
+y8=c(139,163,160,160,147,149,149,122,132,144,130,144,102,124,144)
+z8=x8-y8
+qqnorm(z8)
+#(b)
+#One-tailed | H0=A is not greater than B
+wilcox.test(x8, y8, paired=TRUE, correct=FALSE,alternative = c("greater")) # V = 96, p-value = 0.02063 H0기각
+wilcox.test(x8, y8, paired=TRUE,alternative = c("greater")) 
+#V = 96, p-value = 0.02063
+z8 <- z8[z8 != 0]
+wilcox.test(z8,alternative = c("greater")) #V = 96, p-value = 0.02063
+t.test(x8,y8,alternative=c("greater"))
+t.test(x8,y8,paired=TRUE,alternative=c("greater"))
+
+
+
+#14.09
+#H0:화석들이다르지 않다, H1:화석들이 다르다
+y91=c(1.38, 1.42, 1.59, 1.36, 1.91)
+y92=c(1.49, 1.32, 2.01, 1.59, 1.76)
+y93=c(3.12, 2.19, 2.76, 3.96, 2.23)
+y94=c(1.31, 1.46, 1.86, 1.58, 1.64)
+kruskal.test(list(y91, y92, y93, y94))#Kruskal-Wallis chi-squared = 11.017, df = 3, p-value = 0.01164
+x9=rep(1:4,each=5)
+y9=c(y91,y92,y93,y94)
+t9=rbind(x9,y9)
+res9=anova(lm(y9~as.factor(x9)))#F:11.666 P:0.000266
+qf(1-0.05, 3,16)#3.238872
+
+#14.10
+P1=c(40,28,31,38,43,46,29,18)
+P2=c(38,49,56,25,37,30,41)
+P3=c(68,51,45,75,75,69)
+kruskal.test(list(P1, P2, P3)) #p=0.004974
+
+#14.11
+증명문제
+#14.12
+증명문제
+
+
+
+# 현대통계학 13장 연습문제 풀이
+#13.01 적합성 검정
+#H0 P1=0.4,p2=0.2,p3=0.2,p4=0.2 H1:H0가 아니다
+x=c(110,57,53,80)
+y=c(120,60,60,60)
+p=(x-y)^2/y
+sum(p)
+qchisq(0.90,3)
+#귀무가설 기각. 1-3월 출생수는 다른 분기의 출생수의 2배라는 주장은 틀린 주장.
+
+#13.02 Y
+#적합성 검정
+x=c(14,18,18,26,24)
+y=100*c(0.2,0.3,0.2,0.2,0.1)
+p=(x-y)^2/y
+sum(p)
+qchisq(0.95,3)
+#따라서 유의한 차이가 있다고 볼수 있다.
+
+#13.03 C
+x3=0:3
+y3=c(19,32,22,7)
+ny3=sum(y3)
+#(a)
+(p.hat=sum(x3*y3)/(80*3))
+#(b)적합성 검정
+#H0:X3i~B(3,p), H1:H0가 아니다
+y3e = vector(length=length(x3))
+(y3e[1:4]=dbinom(0:3,3,p.hat)*80)
+(V = sum((y3 - y3e)^2/y3e))#1.065582
+(V.df = length(x3) - 1 - 1)#2
+(p.v=1 - pchisq(V, V.df))#0.5869646
+alpha=0.05
+(qchisq(1 - alpha, V.df))#5.991465
+#H0채택:이항분포를 따른다.
+
+#13.04 (a) 포아송 분포
+#(b) m=1.1
+x=c(0,1,2,3,4,5,6)
+y=c(82,42,31,12,8,3,2)
+nu=sum(x*y)/sum(y) #poisson nu
+ye=vector(length=5)
+ye[1:4]=sum(y)*dpois(0:3,nu)
+ye[5]=sum(y)*sum(dpois(4:6,nu))
+(p=sum((y[1:5]-ye)^2/ye))
+qchisq(0.95,2)
+#귀무가설 기각 : 포아송 분포를 따르지 않는다.
+
+#13.05 Y
+x=c(229,275,279,321,291,254,60,315,111,268,236,163,157,295,270,289,229,269,337,210,156,278,201,322,257,242,329,321,129,202,203,288,333,262,131,249,220,299,291,252,283,229,293,242,254,306,304,295,183,157,154,328,268,249,306,196,251,215,325,150,199,181,242,330,270,182,190,321,275,210,229,275,241,308,85,249,65,262,190,304,195,278,337,242,242,274,333,311,275,214,157,324,153,216,321,196,308,315,275,177)
+shapiro.test(x)
+qqnorm(x)
+ks.test(x, pnorm, mean(x), sd(x)) 
+
+
+#13.06 C 동질성검정
+#H0:혈청주사를 놓고 놓지 않음에따라 병세가 같다 H1:Ho이 아니다
+T13.6=matrix(c(26,30,8,13),nrow=2)
+chisq.test(T13.6)#chisq test: X-squared = 0.15855, df = 1, p-value = 0.6905
+#text book solution
+(row.mar = apply(T13.6, 1, sum))
+(col.mar = apply(T13.6, 2, sum))
+(N = sum(T13.6))
+(T13.6e = outer(row.mar, col.mar) / N)
+(V = sum((T13.6 - T13.6e)^2/T13.6e))#0.4301186
+(rc = dim(T13.6)[1])#2
+(cc = dim(T13.6)[2])#2
+(V.df = (rc - 1)*(cc - 1))#1
+(p.v=1 - pchisq(V, V.df))#0.5119308
+alpha = 0.05
+(v.c=qchisq(1 - alpha, V.df))#3.841459
+#H0를따른다
+
+#13.07 # 동질성 검정
+#H0:성별에 따라 병세가 같다 H1:H0이 아니다
+T13.7=matrix(c(10,25,65,15,33,52),nrow=2)
+T13.7
+row.mar=apply(T13.7,1,sum)
+row.mar
+col.mar=apply(T13.7,2,sum)
+col.mar
+N=sum(T13.7)
+T13.7a=outer(row.mar,col.mar)/N
+V=sum((T13.7-T13.7a)^2/T13.7a)
+V
+rc=dim(T13.7)[1]
+cc=dim(T13.7)[2]
+V.df = (rc - 1)*(cc - 1)
+V.df
+1 - pchisq(V, V.df)
+alpha = 0.05
+qchisq(1 - alpha, V.df)
+chisq.test(T13.7)
+
+#13.08 Y #동질성 검정
+#H0:학년에 따른 평가가 같다 H1:Ho이 아니다
+T13.8=matrix(c(20,110,170,30,10,50,90,20),nrow=2)
+T13.8
+row.mar=apply(T13.8,1,sum)
+row.mar
+col.mar=apply(T13.8,2,sum)
+col.mar
+N=sum(T13.9)
+T13.8a=outer(row.mar,col.mar)/N
+V=sum((T13.8-T13.8a)^2/T13.8a)
+V
+rc=dim(T13.8)[1]
+cc=dim(T13.8)[2]
+V.df = (rc - 1)*(cc - 1)
+V.df
+1 - pchisq(V, V.df)
+alpha = 0.05
+qchisq(1 - alpha, V.df)
+chisq.test(T13.8)
+
+
+#13.09 동질성검정
+#H0:세가지채소의피해정도는같다 H1:Ho이 아니다
+(T13.9=matrix(c(32,28,19,8,12,21),nrow=3))
+chisq.test(T13.9)#chisq test:X-squared = 9.8549, df = 2, p-value = 0.007245
+#text book solution
+(row.mar = apply(T13.9, 1, sum))
+(col.mar = apply(T13.9, 2, sum))
+(N = sum(T13.9))
+(T13.9e = outer(row.mar, col.mar) / N)
+(V = sum((T13.9 - T13.9e)^2/T13.9e))#9.854893
+(rc = dim(T13.9)[1])#3
+(cc = dim(T13.9)[2])#2
+(V.df = (rc - 1)*(cc - 1))#2
+(p.v=1 - pchisq(V, V.df))#0.007244978
+alpha = 0.1
+(v.c=qchisq(1 - alpha, V.df))#4.60517
+#H0을 기각한다;피해정도가 다르다.
+
+#13.10 동질성 검정
+#H0: 지역에 따라서 기호의 차이있다. H1:지역에 따라 기호의 차이가 없다
+(T13.10=matrix(c(65,53,59,76,48,42,43,49),nrow=4))
+chisq.test(T13.10)#chisq test:X-squared = 0.6005, df = 3, p-value = 0.8963
+#text book solution
+(row.mar = apply(T13.10, 1, sum))
+(col.mar = apply(T13.10, 2, sum))
+(N = sum(T13.10))
+(T13.10e = outer(row.mar, col.mar) / N)
+(V = sum((T13.10 - T13.10e)^2/T13.10e))#0.600502
+(rc = dim(T13.10)[1])#4
+(cc = dim(T13.10)[2])#2
+(V.df = (rc - 1)*(cc - 1))#3
+(p.v=1 - pchisq(V, V.df)) #0.8963174
+alpha = 0.05
+(v.c=qchisq(1 - alpha, V.df))#7.814728
+#H0을 기각 못한다. 기호의 차이가 없음
+
+#13.11 Y 
+#독립성 검정
+#H0:비흡엽자와 흡연자사이 주름에 차이가 없다. H1:Ho이 아니다
+Q13.11=matrix(c(95,103,55,247),ncol=2)
+Q13.11
+col.mar = apply(Q13.11, 1, sum)
+row.mar = apply(Q13.11, 2, sum)
+N = sum(Q13.11)
+Q13.11a = outer(row.mar, col.mar) / N
+V = sum((Q13.11 - Q13.11a)^2/Q13.11a)
+V
+rc = dim(Q13.11)[1]
+cc = dim(Q13.11)[2]
+V.df = (rc - 1)*(cc - 1)
+V.df
+1 - pchisq(V, V.df)
+alpha = 0.05
+qchisq(1 - alpha, V.df)
+chisq.test(Q13.11)
+
+#13.12 C 독립성검정
+#H0:색각과성별은관계가없다 H1:Ho이 아니다
+(T13.12=matrix(c(442,38,514,6),nrow=2))
+chisq.test(T13.12)#X-squared = 25.555, df = 1, p-value = 4.3e-07
+#text book solution
+(row.mar = apply(T13.12, 1, sum))
+(col.mar = apply(T13.12, 2, sum))
+(N = sum(T13.12))
+(T13.12e = outer(row.mar, col.mar) / N)
+(V = sum((T13.12 - T13.12e)^2/T13.12e))#27.13874
+(rc = dim(T13.12)[1])#2
+(cc = dim(T13.12)[2])#2
+(V.df = (rc - 1)*(cc - 1))#1
+(p.v=1 - pchisq(V, V.df))# 1.893646e-07
+alpha = 0.05
+(v.c=qchisq(1 - alpha, V.df))#3.841459
+#H0을 기각한다;색각과성별은관계가있다.
+
+#13.13 C 독립성검정
+#H0:결혼전연애기간과이혼전까지의결혼기간은관계가없다 H1:Ho이 아니다
+(T13.13=matrix(c(11,28,21,8,24,19),nrow=3))
+chisq.test(T13.13)#X-squared = 0.15265, df = 2, p-value = 0.9265
+#text book solution
+(row.mar = apply(T13.13, 1, sum))
+(col.mar = apply(T13.13, 2, sum))
+(N = sum(T13.13))
+(T13.13e = outer(row.mar, col.mar) / N)
+(V = sum((T13.13 - T13.13e)^2/T13.13e))#0.1526503
+(rc = dim(T13.13)[1])#3
+(cc = dim(T13.13)[2])#2
+(V.df = (rc - 1)*(cc - 1))#2
+(p.v=1 - pchisq(V, V.df))# 0.9265149
+alpha = 0.05
+(v.c=qchisq(1 - alpha, V.df))#5.991465
+#H0을따른다.
+
+#13.14 
+#독립성 검정
+#H0:내신성적과 대학 1학년 성적사이에 관계가 없다. H1:Ho이 아니다
+Q13.14=matrix(c(22,11,8,22,18,20,10,36,23,6,11,13),nrow=3)
+col.mar = apply(Q13.14, 1, sum)
+row.mar = apply(Q13.14, 2, sum)
+N = sum(Q13.14)
+Q13.14a = outer(row.mar, col.mar) / N
+V = sum((Q13.14 - Q13.14a)^2/Q13.14a)
+V
+rc = dim(Q13.14)[1]
+cc = dim(Q13.14)[2]
+V.df = (rc - 1)*(cc - 1)
+V.df
+1 - pchisq(V, V.df)
+alpha = 0.05
+qchisq(1 - alpha, V.df)
+chisq.test(Q13.14)
+
+
+
+
+
+
+# 현대통계학 12장 연습문제 풀이
+#12.01 H
+x1 = c(195,179,205,204,201,184,210,209)
+x2 = c(57,61,60,62,61,54,58,61)
+y = c(81.4,122.2,101.7,175.6,150.3,64.8,92.1,113.8)
+length(x1)
+length(x2)
+length(y)
+par(mfrow=c(1,2))
+plot(x1, y)
+plot(x2, y)
+lm(y ~ x1+x2)
+res1 = lm(y ~ x1 + x2)
+summary(res1)
+
+#12.02 Y
+#(1)
+y=c(2.8,3.9,3.9,4.4,3.1,3.1,3.5,3.6,3.0,3.3)
+x1=c(10,24,25,28,15,18,22,22,12,15)
+x2=c(27,26,28,26,30,24,27,25,27,25)
+x3=c(64,72,80,88,81,45,46,69,54,39)
+length(x1)
+length(x2)
+length(x3)
+length(y)
+par(mfrow=c(1,3))
+plot(x1, y)
+plot(x2, y)
+plot(x3, y)
+lm(y~ x1+x2+x3)
+res1=lm(y~ x1+x2+x3)
+summary(res1)
+#(2)
+B1=평균온도 1도 상승시의 물 소비량 증가량의 추정값
+B2=작업일수 1일 증가에 의한 물소비량 증가량의 추정값
+B2=작업량 1000톤 증가에 의한 물 소비량 증가량의 추정값
+#(3)
+anova(res1) 
+summary(res1)$ r.squared
+#(4)
+yhat=2.409213+0.069788*20-0.024767*27+0.005864*60
+yhat
+
+#12.03 C
+x3=c(-3,-2,-1,0,1,2,3)
+y3=c(0.4,1.3,2.2,2.5,2.4,2.0,1.5)
+res3.1=lm(y3~x3)
+summary(res3.1)
+rsq3=vector(length=3)
+#(a) rsq3.1=0.257 from summary(res3.1)
+#text book solution
+(ybar=mean(y3))
+(sst=sum((y3-ybar)^2))
+(sse=sum(res3.1$residual^2))
+(ssr=sst-sse)
+(rsq3[1]=ssr/sst)
+#(b)
+#중회귀모형Yi=b0+b1*x1i+b2*x2i+ei;x2i=xi^2
+x3sq=x3^2
+res3.2=lm(y3~x3+x3sq)
+summary(res3.2)
+rsq3[2]=0.9864
+#(c)
+#중회귀모형Yi=b0+b1*x1i+b2*x2i+b3*x3i+ei;x2i=xi^2, x3i=xi^3
+x3tr=x3^3
+res3.3=lm(y3~x3+x3sq+x3tr)
+summary(res3.3)
+rsq3[3]=0.9884
+#(d)
+plot(rsq3, type="o")
+#2차에 비해 3차에서 rsq값의 증가가 거의 없으므로,각3차모형까지 필요없다
+
+#12.04 H
+x4=c(1,2,2,3,3,4,5,6,6,7,8,9)
+y4=c(30,20,18,17,15,12,10,9,7,6,5,5)
+plot(x4,y4)
+
+#2차곡선회귀모형 | Yi=b0+b1*x1i+b2*x2i+e | x2i=xi^2
+x4sq=x4^2
+res4.2=lm(y4~x4+x4sq)
+summary(res4.2) # R^2=0.9544
+
+#3차곡선회귀모형Yi=b0+b1*x1i+b2*x2i+e+b3*x3i;x2i=xi^2, x3i=xi^3
+x4tr=x4^3
+res4.3=lm(y4~x4+x4sq+x4tr)
+summary(res4.3) # R^2=0.971
+
+#12.05 Y
+x=c(65,67,66,65.5,65,66.5,66,67,66)
+y=c(114,120,116,118,115,124,124,115,115)
+r=cor(x,y)
+
+
+#12.06 C
+#(a)
+x6=c(41,39,53,67,61,67,46,50,55,72,63,59,63,62,65,48,32,64,59,54,52,64,51,62)
+y6=c(29,19,30,27,28,27,22,29,24,33,25,20,28,22,27,22,27,28,30,29,21,36,20,29)
+plot(x6,y6)
+#(b)
+r=cor(x6,y6)#0.3857739
+#(c)
+n=length(x6)
+(t.v=sqrt(n-2)*r/sqrt(1-r^2))
+cor.test(x6,y6)#t.v=1.9613, df = 22, p-value = 0.06263
+qt(0.975,22)#[1] t.c=2.073873
+#t.v<t.c이므로 기각할 수 없다.
+
+# 현대통계학 11장 연습문제 풀이
+#11.01 C
+x=c(0,1,1,2,2,2,3,3,4,5)
+y=c(79,78,75,60,65,72,55,63,40,28)
+#(a)
+plot(y~x, pch=16)
+res=lm(y~x)
+res
+abline(res)
+text(1,40, labels=expression(italic(y==-10.62*x+85.93)))
+#(b)
+summary(res)
+n = length(x)
+y.bar = mean(y)
+(sst = sum((y - y.bar)^2))
+(sse = sum(res$residuals^2))
+(ssr = sst - sse)
+mse=sse/(n-2)
+f=ssr/mse
+qf(0.95,1,n-2)
+#(c)
+-10.62*2+85.93
+
+#11.02 H
+x=c(1,2,3,4,5)
+y=c(2,3,5,7,8)
+
+plot(y~x, pch=16)
+res=lm(y~x)
+res
+abline(res)
+res$coefficients # Intercept=0.2, Slope=1.6
+text(2,5,labels=expression(italic(y==0.2*x+1.6)))
+
+#11.03
+x=c(1,2,3,4,5)
+y=c(2,3,5,7,8)
+res=lm(y~x)
+res
+
+
+summary(res)
+#(b)
+ys=1.6*x+0.2
+sum(ys)-sum(y)
+sse = sum(res$residuals^2)
+sse
+sum((y-mean(y))^2)-sum((ys-mean(ys))^2)
+
+#11.04
+x=c(1,2,2,3,3,4,6,7,8,10)
+y=c(2.45,1.80,2.00,2.00,1.70,1.20,1.15,0.69,0.60,0.47)
+plot(y~x, pch=16)
+res=lm(y~x)
+res
+summary(res)
+abline(res)
+text(8,2.0,labels=expression(italic(y==-0.2176*x+2.4070)))
+#(c)
+-0.2176*5+2.4070
+#(d)
+-0.2176*20+2.4070#yhat=-1.945으로 불합리하다
+
+#11.05 H
+#(a)
+n=15
+xhat=10.8
+yhat=122.7
+Sxx=70.6
+Syy=98.5
+Sxy=68.3
+(bhat=Sxy/Sxx) #0.9674221
+(ahat=yhat-bhat*xhat) #112.2518
+# Linear regression : y = 112.2518 + 0.9674*x
+#(b)
+(Rsq=Sxy^2/(Sxx*Syy)) #0.6708115
+#(c)
+x=12
+ahat+bhat*x #123.8609
+
+#11.06
+x=c(1,2,2,3,3,4,6,7,8,10)
+y=c(2.45,1.80,2.00,2.00,1.70,1.20,1.15,0.69,0.60,0.47)
+res = lm(y ~ x)
+summary(res)
+n3 = length(x)
+x.bar=mean(x)
+sxx = sum((x - x.bar)^2)
+sxx
+(mse = sse/res$df.residual)
+-0.21761+c(-1,1)*qt(0.975,8)*sqrt((mse/sxx))
+#다음 변화율 안에 속한다는 것을 95%확신을 갖는다는 의미이다.)
+y5=-0.21761*5+2.40701 
+y5+c(-1,1)*qt(0.975,8)*sqrt((mse*(1/10+(5-mean(x))^2/sxx)))
+
+#11.07
+#Ho:b<=1.5, H1:b>1.5
+n=15
+bh=68.3/70.6
+bo=1.5
+sst=98.5
+ssr=(68.3)^2/70.6
+sse=sst-ssr
+mse=sse/(n-2)
+t.v.=(bh-bo)/sqrt(mse/70.6)#-2.833458
+qt(0.95,n-2)# 1.770933
+
+#11.08 H
+x=c(1.68,1.74,1.85,1.92,1.99,1.82,1.69,1.60,1.52)
+y=c(0.33,0.41,0.57,0.65,0.77,0.57,0.35,0.18,0.14)
+#(a)
+plot(y~x, pch=16)
+res=lm(y~x)
+res
+res$coefficients # Intercept=-2.011892, Slope=1.396396
+abline(res)
+text(1.6,0.5,labels=expression(italic(y==-2.012*x+1.396)))
+#(b)
+n = length(x)
+y.bar = mean(y)
+(Sxx=sum(x^2)-sum(x)^2/length(x))
+(sst = sum((y - y.bar)^2))
+(sse = sum(res$residuals^2))
+(ssr = sst - sse)
+(mse=sse/(n-2))
+(Intercept=as.vector(res$coefficients[1])) #-2.011892
+(Slope=as.vector(res$coefficients[2])) # 1.396396
+Slope+Slope*c(-1,1)*qt(0.95,7)*sqrt(mse/Sxx) # 90% Confidence Interval of Slope
+#(c)
+Obs=1000/714
+EY=Intercept+Slope*Obs
+EY+c(-1,1)*qt(0.95,7)*sqrt(mse*(1/length(x)+(Obs-mean(x))^2/0.185)) # 90% Confidence Interval of Obs
+
+#11.09
+#(a)
+X=c(0.9,1.2,2.9,3.1,3.3,3.9,4.3,6.2,9.6,12.6,16.1,25.8)
+Y=c(6,8.7,10.6,12,15,12.5,13.5,19.2,23.4,28,34,29.2)
+plot(y~x)
+#직선관계가 적절하다. 
+res=lm(y~x)
+res
+
+#(b)
+X1=log(X)
+Y1=log(Y)
+res1=lm(Y1~X1)
+Res1
+Sxx=sum(X1^2)-sum(X1)^2/length(X1)
+Syy=sum(Y1^2)-sum(Y1)^2/length(Y1)
+Sxy=sum(X1*Y1)-sum(X1)*sum(Y1)/length(Y1)
+
+
+#(c)
+
+
+#11.10
+x=c(1,1,1,2,3,3,4,5,5)
+y=c(9,7,8,10,15,12,19,24,26)
+plot(y~x, pch=16)
+res=lm(y~x)
+res
+abline(res)#y=4.1701*x+2.8608/r^2= 0.9413
+summary(res)
+#일차함수와 (b)에 제시된 함수
+#(b)
+#y=a*exp(b*x)
+#log(y)=log(a)+bx
+y1=log(y)
+res1=lm(y1~x)
+res1
+summary(res1)
+plot(y1~x, pch=2,col=2)
+abline(res1, col=2)#log(y)=0.28772*x+1.76729/r^2=0.9645
+#y=a*x^b
+#log(y)=log(a)+b*log(x)
+x1=log(x)
+y1=log(y)
+res2=lm(y1~x1)
+res2
+summary(res2)
+plot(y1~x1, pch=3,col=3)
+abline(res2, col=3)#log(y)=0.66700*log(x)+2.01102/r^2=0.9027
+#y=(a+bx)^2
+#sqrt(y)=a+bx
+y2=sqrt(y)
+res3=lm(y2~x)
+res3
+summary(res3)
+plot(y2~x, pch=4,col=4)
+abline(res3, col=4)#sqrt(y)=0.54051*x+2.20196/r^2=0.9593
+#(b)의 1)의 r^2가 가장 크므로 가장적절하다
+
+#11.11 H
+x=c(170,147,166,125,182,133,146,125,130,179,174,128,152,157,174,185,171,102,150,192)
+y=c(698,518,725,485,745,538,485,625,471,798,645,578,625,558,698,745,611,458,538,778)
+#(a),(b)
+plot(y~x, pch=16)
+res=lm(y~x)
+res
+(Intercept=as.vector(res$coefficients[1])) 
+(Slope=as.vector(res$coefficients[2])) 
+abline(res)
+text(120,700,labels=expression(italic(y==3.713735*x+42.69929)))
+#(c) 대입 성적의 변화에 따른 중간고사 성적의 변화율, 기울기
+#(d)
+
+par(mfrow=c(3,1))
+plot(y~x, pch=16)
+abline(res)
+text(120,700,labels=expression(italic(y==3.713735*x+42.69929)))
+hist(res$residuals,breaks=20) #정규분포 아님
+plot(x,res$residuals) #
+
+
+
+#11.12
+증명생략
+#11.13
+증명생략
+#11.14 H
+#(a)
+x=c(6.4,16.1,42.1,19.0,30.7,32.1,7.2,3.4,20.8,21.5)
+y=c(1.7,2.7,4.9,2.9,3.9,4.1,1.2,0.5,3.3,3.2)
+plot(y~x, pch=16)
+res=lm(y~x)
+res
+abline(res)#y=0.106876*x+0.709968/r^2= 0.9478
+#(b)r^2= 0.9478으로 만족할만하다
+#y=exp(a+b*x)
+#log(y)=a+b*x
+y1=log(y)
+res1=lm(y1~x)
+res1
+summary(res1)
+plot(y1~x, pch=2,col=2)
+abline(res1, col=2)#log(y)=0.048172*x-0.080472/r^2=0.7472
+#y=a+b*sqrt(x)
+#log(y)=a+b*x
+x2=sqrt(x)
+res2=lm(y~x2)
+res2
+summary(res2)
+plot(y~x2, pch=3,col=3)
+abline(res2, col=3)#log(y)=0.9822*x-0.98361/r^2=0.9822
+#y=a*x^b
+#log(y)=log(a)+b*log(x)
+x3=log(x)
+y1=log(y)
+res3=lm(y1~x3)
+res3
+summary(res3)
+plot(y1~x3, pch=4,col=4)
+abline(res3, col=4)#log(y)=0.82699*x-1.39573/r^2=0.9333
+#y=a*b^x
+#log(y)=log(a)+x*log(b)
+#y1=log(y)
+#1)과 r^2같음
+
+
+현대통계학 10장 연습문제 풀이
+#10.01
+x.a=c(35,24,28,21)
+x.b=c(19,14,14,13)
+x.c=c(21,16,21,14)
+n.a = length(x.a)
+n.b = length(x.b)
+n.c = length(x.c)
+x = as.factor(c(rep("A", n.a), rep("B", n.b), rep("C", n.c)))
+y = c(x.a, x.b, x.c)
+anova(lm(y ~ x))
+summary(aov(y ~x))
+qf(0.975,2,9)
+
+#10.02 Y: 
+x.a=c(78,68,64,78,79,73)
+x.b=c(79,79,77,73,81,79)
+x.c=c(94,84,96,88,78,86)
+n.a = length(x.a)
+n.b = length(x.b)
+n.c = length(x.c)
+x = as.factor(c(rep("A", n.a), rep("B", n.b), rep("C", n.c)))
+y = c(x.a, x.b, x.c)
+anova(lm(y ~ x))
+summary(aov(y ~x))
+qf(0.975,2,15)
+
+#10.03
+#반복수가 다른 일원배치법
+x.1=c(19,18,21,18)
+x.2=c(16,11,13,14,11)
+x.3=c(13,16,18,11,15,11)
+n.1=length(x.1)
+n.2=length(x.2)
+n.3=length(x.3)
+x=as.factor(c(rep("1",n.1),rep("2",n.2),rep("3",n.3)))
+y=c(x.1,x.2,x.3)
+anova(lm(y~x))
+summary(aov(y~x))
+qf(0.95,3-1,n.1+n.2+n.3-3)
+#f=8.4375/p=0.005152
+#기각
+
+#10.04 H
+x.1=c(2,3,4,5)
+x.2=c(4,5,7,3,4)
+x.3=c(6,5,7,4,6,8)
+n.1=length(x.1)
+n.2=length(x.2)
+n.3=length(x.3)
+x=as.factor(c(rep("1",n.1),rep("2",n.2),rep("3",n.3)))
+y=c(x.1,x.2,x.3)
+anova(lm(y~x))
+summary(aov(y~x))
+qf(0.95,3-1,n.1+n.2+n.3-3)
+#f=3.851/p=0.051
+#기각
+
+#10.05 Y
+A105=data.frame(A=rep(1:5,each=3),B=rep(1:3,5),Y=c(0.95,0.71,0.69,0.86,0.85,0.68,0.71,0.62,0.51,0.72,0.72,0.73,0.74,0.64,0.44))
+xtabs(Y ~ A + B, data=A105)
+anova(lm(Y ~ as.factor(A) + as.factor(B), data=A105))
+
+#10.06
+Q10.6 = read.csv("Q10.6.csv")
+Q10.6
+xtabs(Y ~ A + B, data=Q10.6)
+anova(lm(Y ~ as.factor(A) + as.factor(B), data=Q10.6))
+summary(aov(Y ~ as.factor(A) + as.factor(B), data=Q10.6))
+x.a=c(rep("1",4), rep("2",4),rep("3",4),rep("4",4),rep("5",4))
+x.b=c(rep(c("1","2","3","4"),5))
+y=c(2,2,3,5,4,5,5,5,5,5,6,7,3,7,6,7,1,1,5,6)
+xtabs(y~x.a+x.b)
+anova(lm(y~as.factor(x.a)+as.factor(x.b)))
+summary(aov(y~as.factor(x.a)+as.factor(x.b)))
+qf(0.95,4,12)#3.259167:fa=5.25/기각
+qf(0.95,3,12)#3.490295:fb=6.25/기각
+
+#10.07 H
+#Two-way ANOVA
+A107=data.frame(A=rep(1:2,each=6),B=rep(rep(1:2,each=2),3),Y=c(81,70,103,110,118,138,123,131,142,143,180,189))
+anova(lm(Y ~ as.factor(A) + as.factor(B) + as.factor(A)*as.factor(B), data=A108))
+
+#10.08
+A108=data.frame(A=rep(1:3,each=6),B=rep(rep(1:3,each=2),3),Y=c(10,13,14,16,18,22,13,16,19,27,14,18,9,14,11,17,14,17))
+anova(lm(Y ~ as.factor(A) + as.factor(B) + as.factor(A)*as.factor(B), data=A108))
+
+현대통계학 9장 연습문제 풀이
+#9.01 H
+#(a)
+#H0: muX>=muY | H1: muX<muY
+X=c(15,20,11,23,16,21,18,16,27,24)
+Y=c(23,31,13,19,23,17,28,26,25,28)
+t.test(X,Y) # t=-1.8055, p>0.05 | two-tailed
+t.test(X,Y,alternative="less") # t=-1.8055, p<0.05 | one-tailed
+qt(0.05,18) # t0.05=-1.734064
+#t<t0.05 이므로 H0를 기각함.
+#(b)
+boxplot(X,Y)
+#(c)
+t.test(X,Y) #95% CI (-9.0942, 0.6942)
+
+#9.02 Y
+# 현재식에서 원래의 평균을 μ1 새로운 강의방식의 평균울 μ2라하면 
+#결국 대립가설은 H0:μ1< μ2, 귀무가설은 H1:μ1>μ2이 된다.
+X92=c(65,70,76,63,72,71,68,68)
+X92bar=mean(X92)
+X92var=var(X92)
+Y92=c(75,80,72,77,69,81,71,78)
+Y92bar=mean(Y92)
+Y92var=var(Y92)
+(X92bar-Y92bar)/sqrt(((X92var*8+Y92var*8)/14)*1/4)
+qt(0.05,14)
+#따라서 유의수준 95%에대한 기각역으로 qt(0.05,14)보다 값이 크므로 귀무가설을 기각하게 된다.
+t.test(X92,Y92, alternative=”less”)
+
+#9.03 C
+#independent sample
+#(a)Ho:mux=muy, !H1:mux=muy, a=0.1
+#X(man)~N(mux, sigmax^2)
+#Y(woman)~N(muy, sigmay^2)
+a=0.1
+nx=15
+xbar=4.8
+sx=0.8*0.8
+sxbar=sx/nx
+ny=16
+ybar=4.4
+sy=0.9*0.9
+sybar=sy/ny
+#기각역|t|>=t(nx+ny-2,a/2)=ta
+(ta=qt(a/2,nx+ny-2))#답안에는 a/2=0.005로 놓고 풀었습니다. a/2=0.05가아닌지..
+#검정통계량t=(xbar-ybar)/(sp*sqrt(1/nx+1/ny))
+(sp=sqrt(((nx-1)*sx^2+(ny-1)*sy^2)/(nx+ny-2)))
+(t=(xbar-ybar)/(sp*sqrt(1/nx+1/ny)))
+ifelse((t)>abs(ta), "reject Ho", "accept Ho")
+#pvalue
+(pv=1-pt(t, nx+ny-2))
+ifelse(pv<a/2, "reject Ho", "accept Ho")
+#b)95%C.I.
+(xbar-ybar)+c(-1,1)*ta*sp*sqrt(1/nx+1/ny)#답안에는 ta=qt(0.0025,29)로 놓았습니다. ta=qt(0.05,29)아닌지
+
+#9.04 H
+#H0: muA=muB | H1: muA!=muB
+Z=abs((7.3-8.9)/sqrt(1.1*1.1/40+1.2*1.2/42))
+Z # 6.2982
+qnorm(0.975) #1.9599
+# Z>Z0.025이므로 H0를 기각. 평균 회복 시간의 차이가 있음.
+
+
+#9.05 Y
+# 현재식에서 정상인의 평균을 μ1 정신분열증 환자 평균울 μ2라하면 
+#결국 대립가설은 H0:μ1> μ2, 귀무가설은 H1:μ1<μ2이 된다. 이에 따라 차의 식을 세우면
+X95bar=39.8
+X95sd=8.16
+Y95bar=35.5
+Y95sd=6.93
+S=sqrt(((X95sd^2*8+Y95sd^2*8)/16)*2/9)
+T=(Y95bar-X95bar)/S
+qt(0.05,16)
+#로 기각역보다 값이 작으므로 기각할 수 없다. 
+H=X95bar-Y95bar+c(-1,1)*qt(0.025,16)*S
+
+#9.06 C
+#a)
+#가정 : 두 모집단은 정규분포를 따른다/두모집단의 variance는 같다
+#X(with hormone), Y(w/o hormone), Let a=0.05
+a=0.05
+nx=6
+xbar=60.8
+sx=16.4
+ny=6
+ybar=41.8
+sy=7.6
+#Ho:mux<=muy, H1:mux>muy
+#기각역t>=|t(nx+ny-2,a)|=|ta|
+(ta=qt(a,nx+ny-2))
+#검정통계량t=(xbar-ybar)/(sp*sqrt(1/nx+1/ny))
+(sp=sqrt(((nx-1)*sx^2+(ny-1)*sy^2)/(nx+ny-2)))
+(t=(xbar-ybar)/(sp*sqrt(1/nx+1/ny)))
+ifelse(t>abs(ta), "reject Ho", "accept Ho")
+#pvalue
+(pv=1-pt(t, nx+ny-2))
+ifelse(pv<a/2, "reject Ho", "accept Ho")
+#b)
+#F검정으로 등분산인지확인한다.
+#Ho:varx=vary, H1:!varx=vary
+a=0.05
+#검정통계량=f
+(f=sx^2/sy^2)
+(fa1=pf(a/2,nx-1,ny-1))
+(fa2=pf(1-a/2,nx-1,ny-1))
+#기각역 f<fa2 or f>fa1
+ifelse(f<fa2 | f>fa1, "reject Ho", "accept Ho")
+#등분산이 아니다
+
+#9.07 H
+(a)랜덤하게 나눠야 호르몬에 의한 변화에 대해서만 조사가능 (confounding factors제거)
+(b)
+nA=6
+nB=6
+set.seed(20160427)
+data.frame(SUBJID=1:12,Hormone=sample(c(rep("(+)",nA),rep("(-)",nB))))
+
+#9.08 Y
+# 95프로의 확률로 보면 현재식에서 방법 1의 평균을 μ1 방법 2의 평균울 μ2라하면 
+#현재 두 방법 사이의 차이는 (sample이 30보다 크므로 정규분포를 이용한다.)
+Z98=(132-123)/sqrt(30^2/53+21^2/65)
+qnorm(0.975)
+#결국 등분산이라는 가정하의 정규분포 95확률을 만족시키지 못한다.
+
+#9.09 C
+#paired comparison
+#Ho:mua-mub=0, H1:!mua-mub=0
+aa=0.05 #유의수준
+a=c(90,86,72,65,44,52,46,38,43)
+b=c(85,87,70,62,44,53,42,35,46)
+(table=matrix(c(a,b),nrow=2,byrow=T))
+abar=mean(a)
+sa=sd(a)
+n=9
+bbar=mean(b)
+sb=sd(b)
+(d=a-b)
+(dbar=mean(d))
+(Sd=sqrt(sum((d-dbar)^2/(n-1))))
+nd=9
+#검정통계량
+(t=dbar/Sd*sqrt(n))
+#기각역|t|>|ta|
+(ta=qt(aa/2,n-1))
+ifelse(abs(t)>abs(ta), "reject Ho", "accept Ho")
+#paired t.test
+t.test(a,b, paired=TRUE)
+
+#9.10 H
+#(a)
+A=c(14,12,18,16,15)
+B=c(16,15,17,16,14)
+boxplot(A,B)
+t.test(A,B, paired=TRUE)
+t.test(A,B, paired=TRUE)$p.value
+t.test(A,B, paired=TRUE)$conf.int
+#(b)
+t.test(A,B)
+t.test(A,B)$p.value
+t.test(A,B)$conf.int
+#(c) Random samples이어야 함.
+
+#9.11 Y
+#(a)
+X911=c(140,90,125,130,95,121,85,97,131,110)
+X911bar=mean(X911)
+Y911=c(130,87,110,132,96,120,86,90,129,100)
+Y911bar=mean(Y911)
+XY911=X911-Y911
+XY911bar=mean(XY911)
+S=sqrt(sum((XY911-XY911bar)^2)/9)
+T=(X911bar-Y911bar)/(S/sqrt(10))
+qt(0.975,9)
+#기각역이 qt(0.975,9)라 임의로 설정할시 기각역보다 T의 값이 크기때문에 귀무가설을 기각하고 왼손이 오른손에 비해 유의미하게 강하다고 볼 수 있다.
+#(b)
+X911bar-Y911bar+c(-1,1)*qt(0.90,9)*S/sqrt(10)
+
+#9.12 C
+#paired comparison
+#Let 모집단 정규분포->t분포/otherwise ->z분포(n>30)
+#Ho:mud=0,H1:mud>0
+#a)
+a=0.05#Let 유의수준 a=0.05
+dbar=120.5
+Sd=198.7
+n=48
+#검정통계량
+(t=dbar/Sd*sqrt(n))#t사용
+(z=dbar/Sd*sqrt(n))#z사용
+#기각역|t|>|ta|
+(ta=qt(a,n-1))
+(za=qnorm(a))
+ifelse(abs(t)>abs(ta), "reject Ho", "accept Ho")
+ifelse(abs(z)>abs(za), "reject Ho", "accept Ho")
+#pvalue
+(pv=1-pt(t,n))
+ifelse(pv<a, "reject Ho", "accept Ho")
+#b)
+(ta2=qt(a/2,n-1))
+(za2=qnorm(a/2))
+dbar+c(-1,1)*ta2*Sd/sqrt(n)
+dbar+c(-1,1)*za2*Sd/sqrt(n)
+
+#9.13 H
+#(a)
+#실험 단위 16대 차. 
+#실험 방법: 16대의 차 중 임의로 8대의 차를 택하여 한 종류의 휘발유를 일정량 사용하여 주행시켜 주행거리를 측정하고 나머지 8대의 차에 다른 종류의 휘발류를 같은 양 사용하여 주행시켜 주행거리를 측정한다.
+
+#(b)
+#실험단위: 40명의 7세 소년들에 대한 다른 두 방법
+#실험 방법: 40명의 7세 소년들 중 한 명씩 임의 추출하여 한 방법을 임의로 택하여 가르치고 실시하여 결과를 측정하고 다른 방법을 택하여 가르치고 실시 후 결과를 측정한다. 
+
+#9.14 Y
+PM=295/500 PF=64/100
+abs(PM-PF)
+qnorm(0.995)*sqrt((PM*(1-PM))/500+(PF*(1-PF))/100)
+
+#9.15 C
+#a)
+#X(신장정상), Y(신장이상)
+a=0.01#유의수준
+x=21
+y=38
+pxh=0.21
+pyh=0.38
+nx=100
+ny=100
+#Ho: px-py>=0, H1:px-py<0
+#검정통계량
+ph=(x+y)/(nx+ny)
+(z=(pxh-pyh)/sqrt(ph*(1-ph)*(1/nx+1/ny)))
+(za=qnorm(a))
+ifelse(abs(z)>abs(za), "reject Ho", "accept Ho")
+#b)95% C.I.
+(za2=qnorm(0.05/2))
+(pxh-pyh)+c(-1,1)*za2*sqrt(ph*(1-ph)*(1/nx+1/ny))
+
+#9.16 H
+X=c(15,20,11,23,16,21,18,16,27,24)
+Y=c(23,31,13,19,23,17,28,26,25,28)
+boxplot(X,Y)
+numx=length(X)
+numy=length(Y)
+xbar=mean(X)
+ybar=mean(Y)
+sx=sqrt(sum((X-xbar)^2)/(numx-1))
+sy=sqrt(sum((Y-ybar)^2)/(numy-1))
+F=sx^2/sy^2
+qf(0.95,9,9)
+qf(0.05,9,9)
+#다음 집안에서의 기각역을(F>=(0.95,9,9), or F<=(0.05,9,9) 만족시키지 못하므로 유의미한 차이가 있다고 볼 수 없다.
+
+#9.17 Y
+#(a)
+X95sd=8.16
+Y95sd=6.93
+F914=(X95sd/Y95sd)^2
+F914
+qf(0.95,8,8)
+#기각역보다 작으므로 귀무가설을 기각할 수 없다.
+#(b)
+F914*c(1/qf(0.95,8,8),qf(0.95,8,8))
+
+#9.18 C
+#A~N(mua, siga^2), B~N(mub, sigb^2)
+a=c(0.95,0.82,0.78,0.96,0.71,0.86,0.99)
+b=c(0.89,0.91,0.94,0.91,0.90,0.89)
+aa=0.05#aa=0.05
+abar=mean(a)
+sa=sd(a)
+na=length(a)
+bbar=mean(b)
+sb=sd(b)
+nb=length(b)
+#Ho:siga^2/sigb^2<=1, H1=siga^2/sigb^2>1
+#검정통계량
+(f=(sa^2/sb^2))
+#기각역f>fa
+(fa=qf(1-aa,na-1,nb-1))#답지에는fa를 qf(1-aa, nb-1,na-1)으로 풀었는데, 왜 그런지 모르겠음
+ifelse(f>fa, "reject Ho", "accept Ho")
+#b)90% C.I.
+(f=(sa^2/sb^2))
+ab=0.1
+(fb=qf(ab/2, nb-1,na-1))
+(fc=qf(1-ab/2, nb-1,na-1))
+#C.I. of siga^2/sigb^2 =(f*fb, f*fc): C.I. of siga2/sigb2 =sqrt(f*fb, f*fc)
+ci=sqrt(c(f*fb, f*fc))
+#var.test(a,b)
+
+현대통계학 8장 연습문제 풀이
+#8.01 H
+(b) 귀무가설 : 새로운 비료를 사용해도 수확량은 증가하지 않는다.
+대립가설 : 새로운 비료를 사용하면 수확량이 증가한다.
+(c) 귀무가설 : 실업률은 6%이다.
+대립가설 : 실업률은 6%가 아니다.
+(d) 귀무가설 : 타르 함유량이 평균 5mg 이상이다.
+대립가설 : 타르 함유량이 평균 5mg 미만이다.
+
+#8.02 Y
+#(a)1종 오류란 귀무가설이 진실인데 귀무가설이 기각 된다고 말할 확률이다. pbinom(0,3,0.5)
+#(b)위와 마찬가지 원리로
+1-pbinom(0,3,0.5)
+
+#8.03 C
+#a)
+#pnorm((c-30)*sqrt(50)/5)-pnorm((29-30)/5*sqrt(50))=0.05
+y1=(29-30)/5*sqrt(50)
+qnorm(pnorm(y1)+0.05)*5/sqrt(50)+30
+#29.19899
+#(b)
+c=29.19899
+mu=27:31
+y=pnorm((c-mu)*sqrt(50)/5)-pnorm((29-mu)/5*sqrt(50))
+y2=pnorm((28.837-mu)*sqrt(50)/5)
+plot(mu, y, xlim=c(27,31), ylim=c(0,1), type="o", lty=1, col="blue" ,xlab="mu", ylab="power", main="power function curve")
+par(new=TRUE)
+plot(mu, y2, type="o", lty=2, col=2,axes=FALSE)
+#line(mu, y2, type="o", col="red", lwd=5)
+#line(mu, y, type="o", col="blue",lwd=5)
+
+#8.04 H
+#(a)
+(c=65 + qnorm(0.95)*6/sqrt(9)) #기각역 Xbar>=68.28971
+#(b),(c)
+mu=63:70
+y=1-pnorm((65-mu)*sqrt(9)/6+qnorm(0.95))
+data.frame(mu,y)
+plot(mu,y,type="o")
+
+#8.05 Y
+#위와 동일하게 H0:μ< 65 H1:μ>=65 일 때 (a)a에서 구한 기각역의 critical value 는68.29이다.
+X805=c(63,72,64,69,59,65,66,64,65) 
+mean(X805)
+현재 여기서 나온 평균 값은 65.22로 기각역에 속하지 않으므로 귀무가설을 0.05로 기각할 수 없으며 틀리다고 할 수 없다. 
+
+#8.6
+#a)
+n=9
+sigma=6
+mu=68
+c=68.29#from8.4
+#검정력=gamma(68)=P[xbar>68.29|mu=68]=P[Z>(68.29-mu)/sigma*sqrt(n)]=1-P[Z<=(68.29-mu)/sigma*sqrt(n)]
+g=1-pnorm((68.29-mu)/sigma*sqrt(n))
+b=pnorm((68.29-mu)/sigma*sqrt(n))
+#0.5576446>0.1(beta오류를 0.1미만으로 하고자함)
+#목적에 맞지 않다
+#b)
+#기각역xbar>65+1.645*6/sqrt(n)
+#검정력gamma(68)=P[xbar>65+1.645*6/sqrt(n)|mu=68]=P[z>(65-mu)/sigma*sqrt(n)+1.645]=P[z>-sqrt(n)/2+1.645]=1-beta오류일확률
+#beta오류=P[z<=-sqrt(n)/2+1.645]<0.1
+#-sqrt(n)/2+1.645<qnorm(0.1)
+y=1.645-qnorm(0.1)
+n=ceiling(y*y*4)
+
+#8.07H
+obs=c(6.4,4.3,5.7,4.9,6.5,6.4,5.1,5.9)
+qt(0.95,7) # 유의수준 0.05의 기각역
+(mean(obs)-5)/(sd(obs)/sqrt(8)) #t의 관찰 | null hypothesis 채택
+
+#8.08Y 
+#n=5 μ=35,800, sigma=4500 이고 H0:μ>= 30000 H1:μ<30000이라 둘때
+T=(35800-30000)/4500*sqrt(5) 
+qt(0.05,4)
+#T가 t검정 값보다 더 크고 귀무가설을 기각할 수 없으므로 선전이 옳다고 볼 수 없다
+
+#8.9
+a)#기각역xbar>=0.6+1.645*0.11/10=0.61809
+#관측값의 xbar=0.63
+#0.63>=0.61809
+#Ho기각
+b)#유의확률p(z>=(0.63-0.6)/0.11*10)=p(z>=2.727273)
+1-pnorm(2.727273)
+
+#8.10 H
+#(a) H0: p<= 0.3 , H1: p>0.3
+#(b)
+data.frame(X=1:20,P=pbinom(1:20,20,0.3)) #기각역 X>=10
+#(c)
+1-pbinom(9,20,0.3)# alpha
+
+#8.11 Y
+#(a)
+#8.10과 같이 H0:p<= 0.3 H1:μ>0.3 p=0.4일시 현재 앞에서 구한 기각역은 X>=10이고 따라서 기각역에 속하지 않을 확률은 X<=9가 된다. 이것을 대입하여 
+pbinom(9,20,0.4)
+#(b)
+PX=function (x) (1-pbinom(9,20,x))
+X811=c(0.3,0.4,0.5,0.6,0.7)
+PX811=PX(X811)
+rbind(X811,PX811)
+XX=rbind(X811,PX811)
+curve(PX,0,1,col="blue", xlab="p", ylab="power", main="power function curve")
+points(X811,PX811,type="p")
+
+#(c)
+#p=0.5이고 기각역 X>=10을 만족하므로 변했다고 볼 수 있다.
+#(D) 0.048이다.(기각역 10에서의 유의수준이다.)
+
+#8.12
+n=200
+p=0.02
+#a)
+#Ho:m<=4, H1>4
+#b
+#P[X>=c|m=4]=0.05
+#P[z>=(c-4)/sqrt(n*p*(1-p))]=0.05
+c=4+sqrt(n*p*(1-p))*qnorm(0.95)
+#c=7.256644
+#xbar=6(관측값)<c->기각할 수 없다
+#c
+m=9
+n=200
+p=0.045
+#P[X>c|m=9]
+#=P(z>(c-m)/sqrt(n*p*(1-p))=1-P(z<=(c-m)/sqrt(n*p*(1-p))
+1-pnorm((c-m)/sqrt(n*p*(1-p)))#0.7239621:더효과적일 확률
+
+#8.13 H
+qnorm(0.995) #기각역 Z>2.58
+
+
+#8.14 Y
+#(a)다음에서 H0:sigma^2 <= 0.09 H1:sigma^2 > 0.09
+qchisq(0.95,9)
+(10-1)*(0.4^2)/0.09
+다음에서 카이검정값이 더 크므로 귀무가설을 기각할 수 없다.
+#(b) H0:sigma^2 = 0.09 H1:sigma^2 =/ 0.09 202p의 공식을 활용하여
+(10-1)*(0.4^2)/0.09
+qchisq(0.025,9)
+qchisq(0.975,9)
+# 이 때 X814=(10-1)*(0.4^2)/0.09의 경우  X<=qchisq(0.025,9) |  X>=qchisq(0.975,9)  을 만족하지 못하므로 귀무가설을 기각할 수 없다.
+
+#8.15
+a=qchisq(0.975,9)
+b=qchisq(0.025,9)
+c=0.01*a
+d=0.01*b
+#기각력:S^2<=d, S^2>=c
+#검정력gamma(0.16)=P[S^2<=d, S^2>=c|sigma^2=0.16]=1-P[d<=S^2<=c|sigma^2=0.16]=1-P[9d/0.16<=9S^2/0.16<=9c/0.16]
+e=9*c/0.16
+f=9*d/0.16
+#9*S/0.16~chisq(9)
+1-(pchisq(e,9)-pchisq(f,9))
+
+#8.17Y
+#정규확률지 문제로 생략한다. P207에 입력하여 직선을 이루는 가를 확인하면 된다.
+
+#8.18
+x=c(0.6309,0.6241,0.6359,0.6320,0.6116,0.6585,0.6399,0.6301,0.6428,0.6458,0.6483,0.6397,0.6329,0.6266,0.6430,0.6362,0.6180,0.6544,0.6521,0.6390,0.6296,0.6328,0.6380,0.6499,0.6215,0.6300,0.6445,0.6320,0.6262,0.6404,0.6471,0.6459,0.6402,0.6449,0.6394,0.6214,0.6368,0.6611,0.6390,0.6441)
+n=length(x)
+xbar=mean(x)
+s=sd(x)
+z=(xbar-0.6)/s*sqrt(n)
+za=qnorm(0.975)
+ifelse(abs(z)>za,"reject null hypothesis","accept null hypothesis")
+
+
+
+현대통계학 6장 연습문제 풀이
+#6.01 H
+(mu=1*0.3+2*0.4+3*0.3) #E(X)
+(sigma=1*0.3+4*0.4+9*0.3-mu^2) #SD
+
+#6.02 Y # 
+X4=c(1.00,1.25,1.50,1.75,2.00,2.25,2.50,2.75,3.00) PX4=c(0.0081,0.0432,0.1188,0.2064,0.2470,0.2064,0.1188,0.0432,0.0081)
+MX4=cbind(X4,PX4)
+MX4
+sum(X4*PX4)
+sqrt(sum((X4^2)*PX4)-(sum(X4*PX4)^2))
+
+#6.03 C
+(a)
+mu=3.5
+sd=0.5
+n=16
+#Xbar~N(mu,sd^2/n)=N(3.5,1/64) 정확한 정규분포
+(b)i
+1-pnorm(3.7, 3.5, 1/8)
+(b)ii
+pnorm(3.66,3.5,1/8)-pnorm(3.34,3.5,1/8)
+
+#6.04 H
+#(a)
+mu=25
+sigma=0.2
+sample_sigma=0.2/sqrt(5)
+1-2*(pnorm(25.2,mu,sample_sigma)-0.5)
+#(b)
+mu=25.3
+pnorm(25.2,mu,sample_sigma)-pnorm(24.8,mu,sample_sigma)
+
+#6.05 Y
+(a)1-pnorm(280,270,sqrt((50^2)/75))+pnorm(260,270,sqrt((50^2)/75))
+(b)1-pnorm(280,270,sqrt((64^2)/75))+pnorm(260,270,sqrt((64^2)/75))
+
+#6.06 C
+#Xbar~N(mu, 7*7/80), n>30
+#(Xbar-mu)/sqrt(7*7/80)~N(0,1)
+#P[-1.54<=(Xbar-mu)<=1.54]=P[-1.54/sqrt(7*7/80)<=(Xbar-mu)/sqrt(7*7/80)<=1.54/sqrt(7*7/80)]
+(z=c(-1,1)*1.54/sqrt(7*7/80))
+(pz=pnorm(1.54/sqrt(7*7/80))-pnorm(-1.54/sqrt(7*7/80)))
+#또는 다음과 같이 풀수도 있음 (Xbar-mu)~N(0,sqrt(7*7/80))
+(pz=pnorm(1.54,0,sqrt(7*7/80))-pnorm(-1.54,0,sqrt(7*7/80)))
+
+#6.07 H
+#(a)
+mu=50
+sample_sigma=8/sqrt(60)
+1-pnorm(52,mu,sample_sigma)
+#(b)
+1-pnorm(53,mu,sample_sigma)
+
+#6.08 Y
+(a)qchisq(1-0.05,5)
+(b)qchisq(1-0.01,9)
+(c)qchisq(0.025,16)
+(d)qchisq(0.05,10)
+
+#6.09 C
+qt(1-0.05, 7)
+qt(1-0.025, 12)
+qt(1-0.01, 20)
+qt(1-0.1, 8)
+
+#6.10 H
+qf(1-0.05,7,9)
+qf(1-0.01,3,8)
+qf(0.05,12,7)
+qf(0.01,4,8)
+
+#6.11 Y 
+#증명문제 
+
+#6.12 C
+(a)
+#(10-1)*S*S/(2*2)~chisq(10-1)
+#(9/4)*S*S~chisq(9)
+#problem P{S*S<=y}=0.05
+#P{(9/4)*S*S<=(9/4)*y}=0.05
+#(9/4)*y=qchisq(0.05,9)
+(y=4/9*qchisq(0.05,9))
+(b)
+#Xbar~N(1,2*2/10)
+#sqrt(10)*(Xbar-1)/S~T(9)
+#problem P{(Xbar-1)/S<=y}=0.5
+#P(sqrt(10)*(Xbar-1)/S<=y*sqrt(10)}=0.5
+#y*sqrt(10)=qt(0.5, 9)
+(y=qt(0.5, 9)/sqrt(10))
+
+#6.13 C
+#(S1^2*3^2)/(S2^2*2^2)~F(9,9)
+#P[S1^2<=y*S2^2]=P[S1^2/S2^2<=y]=P[(S1^2*3^2)/(S2^2*2^2)<=9/4*y]=0.95
+#9/4y=qf(0.95,9,9)
+(y=4/9*qf(0.95,9,9))
+
+
+현대통계학 5장 연습문제 풀이
+2016.03.23. AMC CPT 수업 by Prof.Bae
+#5.01 H
+1-pnorm(1.69) #(a)
+1-pnorm(-1.69) #(b)
+(1-pnorm(1.64))*2 #(c)
+1-pnorm(1.64)+pnorm(-1.64) #(c) another expression
+pnorm(2.1)-pnorm(-1.2) #(d)
+
+#5.02 Y 
+#(a)qnorm(1-0.95)
+#(b)qnorm(1-0.01)
+#(c)qnorm(0.05)
+#(d)qnorm(1-0.05/2)
+#(e)qnorm(0.45+0.50)
+#(f)qnorm(1-(0.49+0.50))
+
+#5.03 C
+mu=100
+sigma=15
+(a)
+pnorm(92.5, mu, sigma)
+(b)
+pnorm(100, mu, sigma)-pnorm(77.5, mu, sigma)
+ⓒ
+1-pnorm(76, mu, sigma)
+(d)
+pnorm(128.5,mu, sigma)-pnorm(112, mu, sigma)
+(e)
+pnorm(127, mu, sigma)-pnorm(91, mu, sigma)
+(f)
+1-pnorm(124, mu, sigma)
+
+#5.04 H
+#(a)
+(z1 = qnorm(0.975)) # [1] 1.959964
+z1*sigma+100 # [1] 115.6797
+#(b)
+(z2 = qnorm(1-0.025))
+z2*sigma+100
+
+#5.05 Y
+#(a)pnorm(0,0.05,1.5,lower.tail=F)
+#(b)(1-pnorm(2.8,0.05,1.5))+pnorm(-2.8,0.05,1.5)
+#5.06 C
+mu=90
+sd=20
+(a)
+x1=80
+pnorm(x1, mu, sd)*100
+(b)
+x2=0.05 #X가 적은쪽에서5%이므로
+qnorm(x2,mu,sd)
+
+#5.07 H
+#(a) 
+mu=255
+sigma=40
+pnorm((210-mu)/sigma) #[1] 0.1302945
+#(b) 
+pnorm((300-mu)/sigma) #[1] 0.8697055
+
+#5.08 Y
+#(a) 200+80 
+round(sqrt(15^2+5^2),2)
+#(b) pnorm(300,280, 15.81, lower.tail=F)
+#5.09 C
+(a)#접착력이98pound보다 작을 확률
+mu=100
+sd=8
+x1=98
+pnorm(x1,mu,sd)
+(b)
+n=10
+p=pnorm(x1,mu,sd) #실패할 확률
+x2=6 #실패횟수
+1-pnorm(x2,n*p,sqrt(n*p*(1-p)))#실패횟수가 x2보다 클확률
+1-pnorm(x2-0.5,n*p,sqrt(n*p*(1-p)))#correction for continuity
+1-pbinom(x2-1, n, p)
+pbin=function(x2,n,p)
+{
+  px=choose(n,x2)*p^x2*(1-p)^(n-x2)
+  return(px)
+}
+x2=0:5
+1-sum(pbin(x2,n,p))
+ⓒ
+mu=100
+sd=8
+x3=102
+p3=pnorm(x3,mu,sd)#실패할 확률
+n=15
+x4=5
+pbinom(x4, n, p3)#5회이하실패할 확률
+
+#5.10 H
+#(a)
+pbinom(5,25,0.4) #[1] 0.0293622
+pbinom(17,20,0.7)-pbinom(10,20,0.7)
+1-pbinom(10,16,0.5)
+
+#(b) 연속성 수정 안하는 경우
+#(i)
+(np=25*0.4)
+(sqrtnpq=sqrt(25*0.4*0.6))
+(z=(5-np)/sqrtnpq) #[1] -2.041241
+pnorm(z) #[1] 0.02061342
+#(ii)
+(np=20*0.7)
+(sqrtnpq=sqrt(20*0.7*0.3))
+(z1=(17-np)/sqrtnpq)
+(z2=(11-np)/sqrtnpq) 
+pnorm(z1)-pnorm(z2)
+#(iii)
+(np=16*0.5)
+(sqrtnpq=sqrt(16*0.5*0.5))
+(z=(11-np)/sqrtnpq)
+1-pnorm(z)
+
+#(c)연속성 수정 하는 경우
+#(i)
+(np=25*0.4)
+(sqrtnpq=sqrt(25*0.4*0.6))
+(z=(5-np+0.5)/sqrtnpq)
+pnorm(z) #[1] 0.03309629
+#(ii)
+(np=20*0.7)
+(sqrtnpq=sqrt(20*0.7*0.3))
+(z1=(17-np+0.5)/sqrtnpq)
+(z2=(11-np-0.5)/sqrtnpq) 
+pnorm(z1)-pnorm(z2) #[1] 0.9123312
+#(iii)
+(np=16*0.5)
+(sqrtnpq=sqrt(16*0.5*0.5))
+(z=(11-np-0.5)/sqrtnpq)
+1-pnorm(z)
+
+#5.11 Y
+#(a) 다음의 경우 np=96,n(1-p)=24로 둘다 5이상이다 
+#정규 분포의 경우 np>5고 n(1-p)>5의 경우 좋은 것으로 알려져 있다.
+#(a)pbinom(89,120,0.8)
+pnorm(90,96,sqrt(96*0.2))
+#(b)1-pbinom(105,120,0.8)
+1-pnorm(105,96,sqrt(96*0.2))
+#(c) dbinom(100,120,0.8)
+
+#5.12 C
+n=200
+p=0.3
+x1=50
+x2=70
+pbinom(x2,n,p)-pbinom(x1-1,n,p)
+pnorm(x2+0.5,n*p,sqrt(n*p*(1-p)))-pnorm(x1-0.5,n*p,sqrt(n*p*(1-p)))
+
+#5.13 Y
+#np=120, nq=320으로 결과가 유의미 하다
+#(a)
+pbinom(104,400,0.3)
+pnorm(105,120,sqrt(400*0.3*0.7))
+#(b) 극단값으로 나올확률이 5#미만이므로 95%의 확률로 유의미하게 시청률이 떨어졌다고 볼 수 있다.
+
+
+현대통계학 4장 연습문제 풀이
+2016.03.18. AMC CPT 수업 by Prof.Bae
+
+#4.01	C
+(a)초기하분포
+pmf.hg <- function(N, M, n, x)
+{ 
+  p = choose(M, x) * choose(N-M, n-x) / choose (N, n) 
+  return(p)
+}
+N=12
+M=6
+n=4
+x=0:4
+y=pmf.hg(N, M, n, x)
+y
+plot(x,y,type="o")
+(b)
+t=matrix(c(x,y),nrow=2,byrow=T)
+ⓒ
+(ex=sum(x*y))
+ex2=sum(x*x*y)
+(varx=ex2-ex*ex)
+#공식초기하분포의평균
+m=n*(M/N)
+#공식초기하분포의분산
+n*(M/N)*(1-M/N)*(N-n)/(N-1)
+
+#4.02	H
+x = 0:6
+Px = function(x)
+{
+  choose(6,x)*(4/10)^x*(6/10)^(6-x)
+}
+Px(x)
+Px.dist = cbind(x,Px(x))
+Px.dist #확률분포표 dbinom(0:6,6,0.4)으로 표현가능
+#(a)
+Px(4)
+
+
+#4.03	Y
+#(a)
+x=c(0,1,2,3,4,5,6,7,8)
+EX=function(x)(choose(8,x)*(4/10)^x*(6/10)^(8-x))
+X31=EX(x)
+cbind(x,X31)
+#(b)
+x=c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)
+X32=dbinom(0:16,size=16,prob=0.6)
+cbind(x,X32)
+#(c)
+x=c(0,1,2,3,4,5,6,7,8,9)
+X33=dbinom(0:9,size=9,prob=0.4)
+cbind(x,X33)    #단 여기서 위의 식에서 나온 표를 다 더할경우 계산이 복잡하므로
+pbinom(5,9,prob=0.4,lower.tail=FALSE)
+#(d)
+EX=function(x)(choose(16,x)*(6/10)^x*(4/10)^(16-x))
+x=(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)
+X34=EX(x)
+cbind(x,X34) #값을 다 더하기엔 복잡하므로
+sum(EX(x[x>=8 & x<=13]))
+
+#4.04	C
+(a)
+pmf.binom=function(n, p, x)
+{
+  p = choose(n, x) * p^x * (1 - p)^(n - x)
+  return(p)
+}
+n=8
+p=0.4
+x=0:8
+y=pmf.binom(n,p,x)
+plot(x,y,type="h",lwd=10)
+(b)
+x=7
+(y=pmf.binom(n,p,x))
+x=7:8
+sum(y=pmf.binom(n,p,x))
+ⓒ
+n=8
+p=0.4
+x=0:8
+y=pmf.binom(n,p,x)
+(ex=sum(x*y))#ex=3.2
+ex2=sum(x*x*y)
+(varx=ex2-ex*ex)#varx=1.92
+
+#4.05	H
+n = 0:7
+dbinom(n,7,0.5)
+dbinom(n,7,0.8)
+dbinom(n,7,0.2)
+par(mfrow=c(3,1))
+barplot(dbinom(n,7,0.5),names.arg=7) #p=0.5
+barplot(dbinom(n,7,0.8),names.arg=7) #p=0.8
+barplot(dbinom(n,7,0.2),names.arg=7) #p=0.2
+
+#4.06	Y
+#(a)
+EX=function(x)(choose(7,x)*(1/10)^x*(9/10)^(7-x))
+sum(EX(x61))
+#(b)
+EX(3)
+3개 검출될 가능성은 2%미만이므로 문제가 중대한경우 공정을 재조정하고 아니면 확인을 위해 표본을 크게해서 다시 검사한다.
+
+#4.07	C
+(a)
+pmf.binom=function(n, p, x)
+{
+  p = choose(n, x) * p^x * (1 - p)^(n - x)
+  return(p)
+}
+p=0.1
+n=25
+x=0:6
+1-sum(pmf.binom(n, p, x))
+(b)
+드물게 일어나는 일이므로 공정을 다시점검
+
+#4.08	H
+EX=function(x)(choose(15,0)*(x)^0*(1-x)^15)
+x=c(0.05,0.1,0.2,0.3,0.4)
+X81=EX(x)
+curve(EX,0,0.5)
+lines(x,X81,type="p",lty=2)
+
+#4.09	Y
+EX=function(x)(choose(10,0)*(x)^0*(1-x)^10)
+x=c(0.05,0.1,0.2,0.3,0.4)
+X91=EX(x)
+curve(EX,0,0.5)
+lines(x,X91,type="p",lty=2)
+#(b)
+표본의 크기를 늘린다
+
+#4.10	C
+#(a)
+p=1:9*0.1
+pseries=cbind(p,dbinom(6,20,p))
+plot(pseries)
+#(b)
+pseries[which.max(dbinom(6,20,p)),1]
+
+
+#4.11	H
+(a)
+pmf.binom=function(n, p, x)
+{
+  p = choose(n, x) * p^x * (1 - p)^(n - x)
+  return(p)
+}
+n=10
+p=c(0.1, 0.2, 0.3,0.4,0.5,0.6,0.7,0.8,0.9)
+x=4
+y=pmf.binom(n, p, x)
+t=matrix(c(p,y),nrow=2,byrow=T)
+rownames(t)=c("p","pbinom")
+plot(p,y,type="o")
+(b)
+t[1,t[2,]==max(t[2,])]
+#p=0.4일때 b(4;10,p)가 최대
+====
+  #4.11	또다른 풀이법
+  #(a)
+  p=1:9*0.1
+pseries=cbind(p,dbinom(4,10,p))
+plot(pseries)
+#(b)
+pseries[which.max(dbinom(4,10,p)),1]
+
+
+
+
+#4.12	Y
+#(a)
+PX=function(x)(exp(-4)*4^x/(factorial(x)))
+PX(3)
+x=c(0,1,2,3,4,5)
+sum(PX(x))
+#(b)
+dpois(0,0.2)
+1-dpois(0,0.2)
+#(c)
+dpois(2,3)
+ppois(7,3,lower.tail=TRUE)-ppois(2,3,lower.tail=TRUE)
+
+#4.13	C
+(a)
+pmf.poisson = function(m, x)
+{
+  p = exp(-m) * m^x / factorial(x)
+  return(p)
+}
+m=2.3
+x=2
+pmf.poisson(m,x)
+(b)
+x=0:4
+1-sum(pmf.poisson(m,x))
+ⓒ
+x=0
+pmf.poisson(m,x)
+
+#4.14	H
+#(a)
+# m=np=50*0.03=1.5
+#(a)
+PX=function(x)(exp(-1.5)*1.5^x/(factorial(x)))
+PX(2)
+x=c(3:50)
+sum(PX(x))
+prob=PX(0:50)
+plot(prob)
+which.max(prob)  
+
+#4.15	Y
+100*0.04
+dpois(3,4) 
+EX=function(x)dpois(x,4)
+
+
+
+
+
+
+현대통계학 3장 연습문제 풀이
+2016.03.16. AMC CPT 수업 by Prof.Bae
+
+#3.1.	H
+#(a)
+d3.1 = c(2,3,4,5,6,0.1,0.3,0.3,0.2,0.1)
+m3.1 = matrix(d3.1,ncol=2)
+m3.1
+
+plot(m3.1[,1],m3.1[,2],type="h") #막대그래프
+barplot(m3.1[,2],names.arg=m3.1[,1]) #히스토그램
+
+#(b)
+Ex=sum(m3.1[,1]*m3.1[,2]) #discrete RV, Expected value
+Ex
+
+#(c)
+Above4=sum(m3.1[,2][m3.1[,1]>=4]) # 
+Above4
+Bet24=sum(m3.1[,2][m3.1[,1]>=2 & m3.1[,1]<=4])
+Bet24
+
+#3.2.	Y
+#(a)
+plot(x2,fx2,xlim=c(1,12),lwd=10,pch=3,type="h")
+#(b)
+sum(x*fx)
+#(c)
+fxx=c(rep(1,8),rep(2,27),rep(4,10),rep(6,33),rep(12,22))
+sum(fxx>=2 & fxx<=7)/length(fxx)
+
+#3.3.	C
+x=c(2,7,8,16,17)
+px=c(1/6,1/3,1/12,1/6,1/4)
+ex=sum(x*px)
+ex
+(b)
+ex2=sum(x*x*px)
+ex2
+vx=ex2-ex^2
+vx
+
+#3.4.	H
+#(a)
+d3.4 = c(0,1,2,3,0.3,0.4,0.2,0.1)
+m3.4 = matrix(d3.4,ncol=2)
+m3.4
+
+Above2=sum(m3.4[,2][m3.4[,1]>=2]) # 
+Above2
+Bet02=sum(m3.4[,2][m3.4[,1]>0 & m3.4[,1]<=2])
+Bet02
+
+#(b)
+ex=sum(m3.4[,1]*m3.4[,2])
+ex #평균
+ex2=sum(m3.4[,1]^2 * m3.4[,2])
+ex2 #제곱의 평균
+varx=ex2-ex^2
+varx #분
+sqrt(varx) #표준편차
+
+#3.5.	Y
+#(a)
+x1=c(2,3,4,5,6)
+px1=c(0.1,0.3,0.3,0.2,0.1)
+xx1=(x1*2-8)^2
+sum(xx1*px1)
+#(b)
+x5=c(0,4,16)
+fx5=c(0.3,0.5,0.2)
+Mx5=data.frame(x5,fx5)
+sum(x5*fx5)
+
+#3.6.	C
+(a)
+y=(2*x-10)^2
+ey=sum(y*px)
+(b)
+x=c(2,7,8,16,17)
+px=c(1/6,1/3,1/12,1/6,1/4)
+mat=matrix(c(x,px,y),nrow=5)
+yu=unique(mat[,3])
+yus=sort(yu)
+t=cbind(yus,rep(0,n2))
+for(i in 1:n2)
+{
+  t[i,2]=sum(mat[yus[i]==mat[,3],2])
+}
+t
+
+#3.7.	H
+#(a)
+prob=c(dbinom(0,4,1/10),dbinom(1,4,1/10),dbinom(2,4,1/10),dbinom(3,4,1/10),dbinom(4,4,1/10))
+prob
+ex=dbinom(1,4,1/10)+dbinom(2,4,1/10)*2+dbinom(3,4,1/10)*3+dbinom(4,4,1/10)*4
+ex
+#(b)
+exsq=dbinom(1,4,1/10)+dbinom(2,4,1/10)*4+dbinom(3,4,1/10)*9+dbinom(4,4,1/10)*16 #E(X^2)
+exsq
+varx=exsq-ex^2 #Var(X)
+varx
+sdx=sqrt(varx) #Sd(X)
+sdx
+#(c)
+x=0:4
+z=(x-ex)/sdx
+matrix(c(z,prob),ncol=2)
+
+#3.8.	Y
+dbinom(1,3,1/3)+dbinom(2,3,1/3)*2+dbinom(3,3,1/3)*3
+#이항분포에서 총 갯수가 n 확률이 p일때 평균은 np이므로
+3*1/3
+#(b)
+3*1/3*2/3
+sqrt(3*1/3*2/3)
+#(c)
+round(-1/sqrt(2/3),2)   #표준화는 현재값에서 평균을 빼고 표준편차로 나눈것을 의미한다. 현재 평균은 1, 표준편차는 sqrt(2/3)이다
+round(2/sqrt(2/3),2)
+fx=c(8/27,4/9,2/9,1/27)
+Fxd=data.frame(X8,fx)
+Fxd
+
+#3.9.	C
+(a)
+fx=function(x)
+{
+  1-x^2
+}
+integrate(fx, lower=-1, upper=1)# 값이1.34
+k=1/1.34
+(b)
+fx=function(x)
+{
+  3/4*(1-x^2)
+}
+integrate(fx, lower=-1/2, upper=1/2)
+ⓒ
+fx=function(x)
+{
+  x*3/4*(1-x^2)
+}
+ex=integrate(fx, lower=-1, upper=1)#E(x),기함수
+ex#ex=0
+fx=function(x)
+{
+  x*x*3/4*(1-x^2)
+}
+ex2=integrate(fx, lower=-1, upper=1)
+ex2#ex2=0.2
+ex=0
+ex2=0.2
+varx=ex2-ex^2
+
+#3.10.H
+#(a)
+fx=function(x)
+{
+  x
+}
+integrate(fx, lower=0, upper=1) #0.5 with absolute error < 5.6e-15
+k=1/0.5 #k=2
+
+#(b)
+efx=function(x)
+{
+  x*2*x
+}
+integrate(efx, lower=0, upper=1) #0.6666667 with absolute error < 7.4e-15
+ex=2/3
+
+varfx=function(x)
+{
+  x^2*2*x
+}
+integrate(varfx, lower=0, upper=1) # 0.5 with absolute error < 5.6e-15
+exsq=0.5
+var=exsq-ex^2
+var
+
+#(c)
+4*exsq-4*ex+1
+
+
+#3.11.Y
+#(a) 0.35, 0.2
+
+#(b)
+XY=c(0,1,2,3)
+PXY=c(0.1,0.3+0.2,0.25+0.05,0.1)
+MXY=data.frame(XY,PXY)
+MXY
+
+#(c)
+x=c(0,1)
+px=c(0.45,0.55)
+sum(x*px)    #E(x)
+x2=x^2
+sum(x2*px)-(sum(x*px)^2) #Var(x)
+
+y=c(0,1,2)
+py=c(0.3,0.55,0.15)
+sum(y*py)   #E(Y)   
+y2=y^2
+sum(y2*py)-(sum(y*py)^2)  #Var(y)
+
+xy=c(0,1,2)
+pxy=c(0.65,0.25,0.1)
+sum(xy*pxy)-sum(x*px)*sum(y*py) #Cov(x,y)
+(sum(xy*pxy)-sum(x*px)*sum(y*py))/(sqrt(sum(x2*px)-(sum(x*px)^2))*sqrt(sum(y2*py)-(sum(y*py)^2)))  #Corr(x,y)
+
+#3.12.C
+x=1:4
+y=0:2
+pxy=matrix(c(0,0.05,0.05,0.10,0.08,0.15,0.10,0.10,0.20,0.12,0.05,0),3, byrow=T)
+dimnames(pxy)=list(y,x)
+(a)0.20 #표에서 B=2&A=1일때
+(b)
+px=apply(pxy, 2, sum)
+py=apply(pxy, 1, sum)
+ex=sum(x*px)
+ex
+ey=sum(y*py)
+ey
+ex2=sum(x^2*px)
+ey2=sum(y^2*py)
+sdx=sqrt(ex2-ex^2)
+sdy=sqrt(ey2-ey^2)
+xy=outer(y,x)
+exy=sum(xy*pxy)
+covxy=exy-ex*ey
+(c)
+corrxy=covxy/(sdx*sdy)
+corrxy#A가 많이 살면 B가 적게 살고, B가 많이 살면 A가 적게 산다
+
+#3.13.H
+#(a)
+x=c(1,5,10)
+y=c(1,2,3)
+
+#(b)
+px=c(1/20+4/20+2/20,2/20+4/20,3/20+3/20+1/20)
+py=c(1/20+2/20+3/20,4/20+3/20,2/20+4/20+1/20)
+sum(x*px) #E(X)
+sum(y*py) #E(Y)
+X2=x^2
+sum(X2*px)-sum(x*px)^2  #V(X)
+sum(x*px)+sum(y*py) #E(X+Y)=E(X)+E(Y)
+#E(XY)!=E(X)*E(Y)
+
+#(c) 독립아님
+
+
+#3.14.Y
+x=1:3
+y=c(2,5)
+px=c(0.4,0.2,0.4)
+py=c(0.6,0.4)
+sum(x*px) #E(X)
+sum(y*py) #E(Y)
+X2=x^2
+sum(X2*px)-sum(x*px)^2  #V(X)
+Y=y^2
+sum(Y*py)-sum(y*py)^2   #V(Y)
+XY=c(2,4,6,5,10,15)
+pxy=c(0.24,0.12,0.24,0.16,0.08,0.16)
+sum(XY*pxy)-sum(x*px)*sum(y*py) #Cov(X,Y), Corr(X,Y)=0 이 앞식에 의거하여 나온다
+
+#(c)
+fxy=c(3,4,5,6,7,8)
+pfxy=c(0.24,0.12,0.24,0.16,0.08,0.16)
+sum(fxy*pfxy)  #E(X+Y)
+fxy2=fxy^2
+sum(fxy2*pfxy)-sum(fxy*pfxy)^2 #V(X+Y)
+
+#(d)
+# 증명문제 성립한다. x가 1,2,3일확률이 각각 (0.4,0.2,0.4)이고 y가 2,5이 확률이 0.6,0.4일때 각각의 교집합이 각각 확률이 곱이 되어야 독립이 성립하는데 각각 행과 열에 맞게곱할시 표와 일치하는 값이 나온다.
+
+#3.15.C
+varx=16
+vary=25
+covxy=-10
+(a)
+sdx=sqrt(varx)
+sdy=sqrt(vary)
+corrxy=covxy/(sdx*sdy)
+(b)
+var3x2=3^2*varx
+ⓒ
+corr3x2y=corrxy
+
+#3.16.H
+ex=5
+varx=9
+ey=10
+vary=25
+(a)
+exy=ex*ey
+exy #E(XY)
+
+explus2y=ex+2*ey 
+explus2y #E(X+2Y)
+
+e13minus2x = 13-2*ex #E(13-2X)
+e13minus2x
+
+#(b)
+varx+vary #Var(X-Y) = Var(X)+Var(Y)
+varx+4*vary #Var(X+Y+Y) = Var(X) + 4*Var(X)
+4*varx #Var(X-X-X-X) = Var(X)+Var(X)+Var(X)+Var(X)
+
+#(c)
+#Cov(X,Y)
+
+xy=c(0,1,2)
+pxy=c(0.65,0.25,0.1)
+ex*ey-ex*ey #Cov(x,y) 독립이므로 0
+
+sdx=sqrt(varx)
+sdy=sqrt(vary)
+corrxy=covxy/(sdx*sdy) #Corr(x,y)
+
+#3.17.Y
+#(a) 
+#y가 0과 1일 확률은 각각 (1/3, 2/3)이고 X가 -1,0,1일확률은 각각  1/3, 1/3, 1/3이 나오게 된다. 이때 독립이기 위해서는 각각의 확률이 합이 그것의 교집합이어야 하지만 성립하지 않으므로 독립이 아니다.
+#(b)
+x11=c(-1,0,1)
+px11=c(1/3,1/3,1/3)
+y11=c(0,1)
+py11=c(1/3,2/3)
+xy11=c(-1,0,1)
+pxy11=c(1/3,1/3,1/3)
+sum(pxy11*xy11)-sum(x11*px11)*sum(y11*py11) 
+#위의 값이 0이되므로 Cov(x,y)는 0이되고 마찬가지로 cor(x,y)=0이 된다.
+
+
+현대통계학 2장 연습문제 풀이
+2016.03.15. AMC CPT 수업 by Prof.Bae
+
+#2.1. H
+#두 주사위를 던져서 나온 매트릭스 구하여 확률 계산
+dice=c(1:6)
+twodice=matrix(c(dice+1,dice+2,dice+3,dice+4,dice+5,dice+6),6)
+twodice
+sum(twodice<4)/length(twodice)
+
+#2.2. Y
+dice=c(1:6)
+dice2=c(1:6)
+Pdice=matrix(c(dice,dice2))
+1-sum(dice>3 & dice2>3)/length(Pdice)
+
+#2.3. C
+(a)
+x1=2
+n=3
+p=0.5
+dbinom(x1,n,p) #이항분포 시행횟수n/성공확률p/x1회성공일 확률 
+(b)
+x2=0
+1-pbinom(x2,n,p)
+ⓒ
+x3=1
+1-pbinom(x2,n,p)
+
+#2.4. H
+#(a) 배반이 아님 - Spade | Ace인 카드 존재함
+#(b) 16/52 = 4/13
+trump.card=c("spade","heart", "diamond", "clover")
+trump=data.frame(trump.card,number=rep(1:13, each=4))
+trump
+length(trump[,1][trump[,1]=="spade"|trump[,2]==1])/length(trump[,1])
+
+#(c) 1/52
+length(trump[,1][trump[,1]=="spade"&trump[,2]==1])/length(trump[,1])
+
+#2.5. Y
+n=x #x는 총정수의 양
+P=function(n){
+  1-dhyper(1,1,n-1,3)
+}
+P(10)
+
+#2.6. C
+pa=0.7 #P(A)
+pb=0.5 #P(B)
+pacnbc=0.2 #P(Ac∩Bc)
+paopb=1-pacnbc #P(AUB)=1-P(Ac∩Bc)
+panpb=pa+pb-paopb #P(A∩B)=P(A)+P(B)-P(AUB)
+pacopbc=paopb-panpb #P(AcUBc)=P(AUB)-P(A∩B)
+pacopbc
+
+#2.7. 증명문제? Independent events
+#(a) 
+1/2
+#(b)이전의 조건과 독립적으로 발생하는 사건이므로 확률은 동일하게 1/2
+1/2 
+
+#2.8. Y
+(1-dhyper(1,2,4,1))*dhyper(1,2,3,1)+dhyper(1,2,4,1)*dhyper(1,1,4,1)
+
+#2.9. C
+plbnprb=5/9*1/2 #L상자에서 파랑 & R상자에서 파랑
+plwnprb=4/9*2/5 #L상자에서 흰 & R상자에서 파랑
+prb=plbnprb+plwnprb
+prb
+
+#2.10. H
+(a) 모든 경우에 노란 구슬이 나올 확률은 1/18로 같음
+y01=1/18
+y02=17/18*1/17
+y03=17/18*16/17*1/16
+#이하 생략
+yellow=c(y01,y02,y03)
+yellow
+
+(b) 모든 경우에 노란 구슬이 나올 확률은 1/9로 같음
+yy01=2/18 #노
+yy02=16/18*2/17+2/18*1/17 #흰노 + 노노
+yy03=16/18*15/17*2/16+16/18*2/17*1/16+2/18*16/17*1/16 #흰흰노 + 흰노노 + 노흰노
+#이하 생략
+yyellow=c(yy01,yy02,yy03)
+yyellow
+
+#2.11. Y
+> P=function(n){3*n/(n+200)} #n은 재수경험을 한 확률 단 n<=100이어야 한다.
+> P(60)
+
+#2.12. C
+pa=0.05
+pb=0.05
+pc=0.05
+panpbnpc=pa*pb*pc
+pnor=1-panpbnpc
+pnor
+
+#2.13. H
+#첫번째 주사위 4나오는 사상: four / 두번 나온 눈의 합이 홀수인 사상: odd
+four = 1/6
+dice = c(1:6)
+twodice = matrix(c(dice+1,dice+2,dice+3,dice+4,dice+5,dice+6),6)
+twodice
+odd = length(twodice[twodice%%2==1]) / length(twodice) #1/2
+odd
+four * odd
+four_odd = length(twodice[4,][twodice[4,]%%2==1]) / length(twodice)
+four_odd
+ifelse(four*odd==four_odd, "independent", "not independent")
+
+#2.14. Y
+#(a)
+> dbinom(2,size=2,prob=2/9)
+#(b)
+> dhyper(2,2,7,2)
+
+#2.15. C
+#P(A ∩ Bc)=P(A)*P(Bc)
+증명문제
+
+#2.16. 
+증명문제 (풀이생략)
+
+
+
+현대통계학 1장 연습문제 풀이
+2016.03.06. AMC CPT 수업 by Prof.Bae
+
+1. H
+chest=c(22,24,24,30,22,20,28,30,24,34,36,15,37) # 자료입력
+stripchart(chest, method = "stack") # stripchart(1-D Scatter Plots)
+
+2. Y
+
+#(a)
+Apple=c(15,20,31,16,22,22,23,33,38,28,25,20,21,23,29,26,40,20,19,31)
+Grape=c(6,19,0,2,11,12,13,12,5,16,2,7,13,20,18,19,19,9,9,9)
+par(mfrow=c(2,1)) # Gives 2 by 1 plot layout
+plot(Apple, type="p", ylim=c(0,50))
+plot(Grape, type="p", ylim=c(0,50))
+#(b)
+Apple=c(15,20,31,16,22,22,23,33,38,28,25,20,21,23,29,26,40,20,19,31)
+Grape=c(6,19,0,2,11,12,13,12,5,16,2,7,13,20,18,19,19,9,9,9)
+par(mfrow=c(2,1))
+stripchart(Apple, method = "stack")
+stripchart(Grape, method = "stack")
+#(c)
+install.packages(“aplpack”)
+require(aplpack)
+stem.leaf.backback(Grape,Apple)
+
+3. C
+#(a)
+x1=c(120,116,94,120,112,112,106,102,118,112,116,98,116,114,120,124,112,122,110,84,106,122,124,112,118,128,108,120,110,106,106,102,140,102,122,112,110,130,112,114,108,110,116,118,118,108,110,110,104,112,112,122,116,110,112,118,98,104,120,106,108,110,102,110,120,126,114,98,116,100)
+boundaries=seq(80.5,140.5,by=5) 
+x2=table(cut(x1,boundaries)) # Cut (Convert Numeric to Factor)
+prop=prop.table(x2)
+cbind(x2,prop)
+#(b)
+hist(x1,freq=F)
+#(c)
+stem(stem(x))
+
+4. H
+#(a)&(b)
+table1.1=read.csv("T1-1.csv") #교수님이 배부한 파일을 Change Dir한 곳에 위치시킴
+Male_Weight=table1.1$Weight[table1.1$Sex==1]
+Female_Weight=table1.1$Weight[table1.1$Sex==0]
+stem(Male_Weight)
+stem(Female_Weight)
+
+5. Y
+x5=c(0.72,0.45,0.80,0.95,0.84,0.82,0.78,0.82,0.89,0.75,0.76,0.81, 0.85,0.75,0.89,0.76,0.89,0.99,0.71,0.77,0.55,0.85,0.77,0.87)
+#a
+stem(x5)
+#b
+mean(x5>0.8)
+#c
+boxplot(x5)
+
+6. C
+x1=c(0,0,2,0,0,0,3,3,0,0,1,8,5,0,0,4,3,0,6,2,
+     0,3,1,1,0,1,0,1,1,0,2,2,0,0,0,1,2,1,2,0,
+     0,1,6,4,3,3,1,2,4,0,0,3,1,2,0,0,0,0,0,1,
+     1,0,2,0,2,4,4,0,2,2)
+#(a)
+t=table(x1)
+boundaries=seq(-0.5,8,by=1)
+x2=table(cut(x1,boundaries))
+prop=prop.table(x2)
+cbind(x2,prop)
+#(b)
+barplot(t)
+#(c)
+t
+
+7. H
+#(a)
+e7=c(0.0,0.8,1.0,1.2,1.3,1.3,1.4,2.4,4.6)
+stem(e7)
+#(b) 분포형태에 관하여 설명하여라.
+#(c) 
+sqrt_e7=round(sqrt(e7),2)
+par(mfrow=c(2,1)) # Gives 2 by 1 plot layout
+stem(e7)
+stem(sqrt_e7) #소수점 둘째짜리까지 표현하려면 stem(sqrt_e7,atom=-2)
+
+8. Y
+#
+x8=c(rep(105,9),rep(115,18),rep(125,23),rep(135,23),rep(145,26),rep(155,22),rep(165,18),rep(175,15),rep(185,5),rep(195,8),rep(205,2),rep(235,2))
+#(a)
+hist(x8)
+#(b)분포형태를 설명하여라
+
+9. C
+#(a)
+x=c(1,-2,4,5)
+a=sum(x)
+a
+#(b)
+b=4*a
+b
+#(c)
+c1=x-2
+c=sum(c1)
+c
+#(d)
+d=sum(x^2)
+d
+#(e)
+e=sum(c1^2)
+e
+x=c(1,-2,4,5)
+summary(x)
+Min. 1st Qu.  Median	Mean 3rd Qu.	Max.
+-2.00	0.25	2.50	2.00	4.25	5.00
+var(x)*3
+
+10. H
+# (a),(b),(c),(e),(f)
+e10a=c(3,6,2,5,4)
+e10b=c(12,14,18,15,12)
+e10c=c(1,4,1,1,5)
+e10d=c(5,15,10,15)
+e10e=c(-2,1,-1,0,3,-2,-1)
+e10list=list(e10a,e10b,e10c,e10d,e10e)
+
+CV <- function(mean, sd){ #변동계수를 정의하는 함수
+  (sd/mean)*100
+}
+
+stat=matrix(nrow=5,ncol=5) #5개의 예제에 대해서 5x5 matrix 만들어 각각 통계값 계산
+colnames(stat) = c("mean","median","sd","CV","range") #이름 배정
+
+row=0
+
+#아래는 while 함수를 사용해서 e10list안의 5개의 집합에 대해 통계값을 산출하여 stat이란 matrix에 저장.
+while(row<5) { 
+  row=row+1
+  
+  stat[row,1]=mean(e10list[[row
+                            stat[row,2]=median(e10list[[row]])
+                            stat[row,3]=sd(e10list[[row]])
+                            stat[row,4]=CV(mean(e10list[[row]]),sd(e10list[[row]]))
+                            stat[row,5]=max(e10list[[row]])-min(e10list[[row]])
+}
+
+stat #결과확인
+
+11. Y
+x11=c(120,116,94,120,112,112,106,102,118,112,
+      + + 116,98,116,114,120,124,112,122,110,84,
+      + + 106,122,124,112,118,128,108,120,110,106,
+      + + 106,102,140,102,122,112,110,130,112,114,
+      + + 108,110,116,118,118,108,110,110,104,112,
+      + + 112,122,116,110,112,118,98,104,120,106,
+      + + 108,110,102,110,120,126,114,98,116,100)
+#(a)mean(x11) #(b)median(x11) #(c)mean(x11,trim=0.1) #(d),(e)quantile(x11) #(f)max(x11)-min(x11) #(g)sd(x11) 
+#(h) >x11.cv=sd(x11)/mean(x11) 
+>x11
+#(i)boxplot(x11) 
+
+12. C
+#(a)
+x=c(20,36,31,39,44,46,44,40,44,54,55,55,55,53,50,53,59,58,58,50,54,59,58,59, 69,62,68,61,64,63,68,67,69,66,67,69,66,68,65,62,65,69,63,71,72,75,78,77,75,78,70,73,76,79,70,72,75,71,79,70,77,74,76,74,70,70,71,75,75,72,71,75,76,80,82,84,83,81,82,85,83,85,82,88,86,84,87,82,84,80,84,83,87,82,80,85,80,81,89,83,80,85,90,95,94,95,90,95,95,92,90,94,95,95,95,90,94,95,100,105,107,110,110)
+quantile(x)
+#(b)
+t=table(x)
+cumsum(t)
+20percentile
+123*0.2 
+80percentile
+123*0.8
+#(c)
+boxplot(x)
+
+13. H
+e13=c(rep(105,9),rep(115,18),rep(125,23),rep(135,23),rep(145,26),rep(155,22),rep(165,18),rep(175,15),rep(185,5),rep(195,8),rep(205,2),rep(235,2)) #자료입력함
+#(a)
+mean(e13)
+#(b)
+sd(e13)
+#(c)
+median(e13)
+#(d),(e)
+quantile(e13)
+
+14. Y
+x14=c(rep(19.5,18),rep(24.5,74),rep(29.5,62),rep(34.5,26),rep(39.5,20))
+x11matrix=matrix(c(19.5,24.5,29.5,34.5,39.5,18,74,62,26,20),5)
+colnames(x11matrix)=c("upper","Frequency")
+RelFactor=x11matrix[,2]/sum(x11matrix[,2])
+CumRelFactor=cumsum(RelFactor)
+cbind(x11matrix,RelFactor,CumRelFactor)
+plot(x11matrix[,1], CumRelFactor,type="o")
+
+15. C
+#(a)
+zz=read.csv(file="C:/test.csv")
+x=zz$Income
+y=zz$Freq
+x=c(105,115,125,135,145,155,165,175,185,195,205,215,225,235,9,18,23,23,26,22,18,15,5,8,2,0,0,2)
+x8=matrix(x, nrow=14)
+x8
+[,1] [,2]
+[1,]  105	9
+[2,]  115   18
+[3,]  125   23
+[4,]  135   23
+[5,]  145   26
+[6,]  155   22
+[7,]  165   18
+[8,]  175   15
+[9,]  185	5
+[10,]  195	8
+[11,]  205	2
+[12,]  215	0
+[13,]  225	0
+[14,]  235	2
+
+N=sum(x8[,2])
+R.F=x8[,2]/N
+R.C.F=cumsum(R.F)
+cbind(x8,R.F,R.C.F)
+plot(x8[,1],R.C.F,type="o")
+#(b)그래프보고 사분위수 구하기
+
+16. H
+e16=c(rep(0.5,1),rep(0.7,5),rep(0.9,15),rep(1.1,28),rep(1.3,22),rep(1.5,7),rep(1.7,1)) #자료입력
+#(a)
+mean(e16)
+sd(e16)
+#(b)
+median(e16)
+quantile(e16)
+#(c)
+hist(e16)
+#(d)
+e16matrix=matrix(c(0.5,0.7,0.9,1.1,1.3,1.5,1.7,1,5,15,28,22,7,1),7) #자료를 7x2 matrix형식으로
+colnames(e16matrix)=c("Eyesight","Frequency")
+RelFactor=e16matrix[,2]/sum(e16matrix[,2])
+CumRelFactor=cumsum(RelFactor)
+cbind(e16matrix,RelFactor,CumRelFactor)
+plot(e16matrix[,1],CumRelFactor,type="o")
+
+17. Y
+#(a)
+year<-c(1908,1912,1920,1924,1928,1932,1936,1948,1952,1956,1960,1964,1968,1972)
+record1<-c(5,5,5,5,5,4,4,4,4,4,4,4,4,4)
+record2<-c(35.8,24.4,26.8,4.2,1.6,48.4,44.5,41.0,30.7,27.3,18.3,12.2,0.90,00.27)
+record=record1*60+record2
+d<-data.frame(year,record1*60+record2)
+d
+par(mfrow=c(2,1))
+plot(record~year,data=d)
+plot(record~year,data=d)
+#(b) 계속 일정한 추세를 따라 변하고 있는 자료의 도수분포표는 크게 의미가 없다.
+
+18. C
+x1=c(0,0,2,0,0,0,3,3,0,0,
+     + + 1,8,5,0,0,4,3,0,6,2,
+     + + 0,3,1,1,0,1,0,1,1,0,
+     + + 2,2,0,0,0,1,2,1,2,0,
+     + + 0,1,6,4,3,3,1,2,4,0,
+     + + 0,3,1,2,0,0,0,0,0,1,
+     + + 1,0,2,0,2,4,4,0,2,2)
+> table(x1)
+최빈값구하기
+
+19. H
+Math=c(66,64,48,46,78,60,90,50,66,70)
+Physics=c(70,68,46,48,84,64,92,52,68,72)
+cor(Math,Physics,method="pearson") 
+cor(Math,Physics,method="spearman")
+cor(Math,Physics,method="kendall")
+
+20. Y
+CD=c(5.5,5.5,5.5,5.6,5.6,6.8,9.6,10.5,11.0,12.0,12.8,13.3)
+BP=c(1.0,1.3,2.2,1.1,1.5,1.9,3.9,5.5,7.3,5.7,8.1,7.8)
+cor(CD,BP,method="pearson")
+cor(CD,BP,method="spearman")
+cor(CD,BP,method="kendall")
+
+21. C
+#(a)서울 자치구별 보육시설수
+x=c(77,65,132,194,229,233,276,338,204,296,542,356,175,244,367,450,366,195,265,238,302,206,238,467,332)
+#(b) 서울 자치구별 노인가구비중(%)
+x=c(25.7, 24.9, 24.7, 24.4, 24.1, 23.4, 23.1, 22.9, 22.7, 21.5, 21.3, 21.0, 21.0, 20.5, 20.0, 19.9, 19.8, 19.2, 18.5, 18.1, 18.0, 17.2, 16.8, 16.5, 15.2)
+#(c) height
+x=c(170,178,171,168,173,178,171,174,170,170,175,
+    + 170,169,166,162,170,171,175,175,171,171,170,
+    + 172,179,164,170,181,178,180,177,166,169,168,
+    + 165,163,175,166,178,165,168,167,177,168,177,
+    + 174,174,176,179,169,173,167,170,173,170,162)
+summary(x)
+sd(x)
+var.coeff=function(x){sd(x)/mean(x)}
+var.coeff(x)
+boxplot(x)

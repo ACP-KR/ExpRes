@@ -36,7 +36,7 @@ a2wnorpl = function(Tbl, alpha=0.05)
   Res2 = cbind(F.val, F.crt, p.val)
   colnames(Res2) = c("F", "F(0.05)", "p-value")
        
-  t.crt = qt(1 - alpha/2, df.E)
+  t.crt <<- qt(1 - alpha/2, df.E)
   LL.a = xi. - t.crt*sqrt(MSE/m)
   UL.a = xi. + t.crt*sqrt(MSE/m)
   LL.b = x.j - t.crt*sqrt(MSE/l)
