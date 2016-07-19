@@ -3,7 +3,7 @@ WD = c("D:\\project\\ExperimentDesign\\src", # 회의실 컴퓨터
        "~/GIT/ExperimentDesign/src",
        "D:\\GIT\\ExperimentDesign\\src")
 setwd(WD[3])
-
+##
 # 기계 소음 작게 하기 위하여 모터의 베어링
 # 조립 후의 볼베어링 유격을 3수준,
 # 조립 후 진동을 3수준으로 바꾸어
@@ -27,7 +27,7 @@ anova(lm(Y ~ as.factor(A) + as.factor(B) + as.factor(A)*as.factor(B), data=Ex5.3
 
 source("a2wff.R")
 a2wff(Ex5.3)
-
+#
 #$`Sum of Squares`
 #                        SS phi        MS
 #Factor A          27.18519   2 13.592593
