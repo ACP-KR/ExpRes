@@ -4,6 +4,8 @@ ehthumbs.db
 
 # Folder config file
 Desktop.ini
+.Rhistory
+.RData
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
@@ -45,6 +47,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-.Rproj.user
 
+.Rproj.user
 .Rhistory
+.RData
+
